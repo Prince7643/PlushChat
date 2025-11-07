@@ -4,15 +4,19 @@ import fs from "fs";
 
 var admin = require("firebase-admin");
 
-let serviceAccountPath = path.resolve(__dirname, "./serviceAccountKey.json");
+let serviceAccountPath: string;
 
-// If running on Render (production)
+// If on Render, use the secret file path
 if (process.env.NODE_ENV === "production") {
   serviceAccountPath = "/etc/secrets/serviceAccountKey.json";
+} else {
+  // Local path during development
+  serviceAccountPath = path.resolve(__dirname, "./serviceAccountKey.json");
 }
 
-// Ensure the file exists
+// ✅ Verify file exists
 if (!fs.existsSync(serviceAccountPath)) {
+  console.error(" Firebase service account not found at:", serviceAccountPath);
   throw new Error("Firebase service account file not found: " + serviceAccountPath);
 }
 
