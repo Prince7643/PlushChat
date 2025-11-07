@@ -11,9 +11,9 @@ import cors from 'cors';
 import { chatSocket } from "./sockets/ChatSocket";
 import http from 'http';
 import contactRoutes from "./routes/contactRoutes";
-import  {CallSocket}  from "./sockets/CallSoket";
 import notificationRoute from "./routes/notification";
 import logger from "./utils/logger";
+import { CallSocket } from "./sockets/CallSocket";
 
 dotenv.config();
 
