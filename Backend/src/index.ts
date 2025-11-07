@@ -8,7 +8,7 @@ import messageRoute from "./routes/messagesRoutes";
 import cookieParser from 'cookie-parser'
 import { limiter } from "./config/rateLimiter";
 import cors from 'cors';
-import { chatSocket } from "./sockets/chatSocket";
+import { chatSocket } from "./sockets/ChatSocket";
 import http from 'http';
 import contactRoutes from "./routes/contactRoutes";
 import  {CallSocket}  from "./sockets/CallSoket";
