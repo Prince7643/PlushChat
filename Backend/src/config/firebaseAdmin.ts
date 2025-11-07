@@ -1,6 +1,22 @@
+
+import path from "path";
+import fs from "fs";
+
 var admin = require("firebase-admin");
 
-var serviceAccount = require("./serviceAccountKey.json");
+let serviceAccountPath = path.resolve(__dirname, "./serviceAccountKey.json");
+
+// If running on Render (production)
+if (process.env.NODE_ENV === "production") {
+  serviceAccountPath = "/etc/secrets/serviceAccountKey.json";
+}
+
+// Ensure the file exists
+if (!fs.existsSync(serviceAccountPath)) {
+  throw new Error("Firebase service account file not found: " + serviceAccountPath);
+}
+
+const serviceAccount = require(serviceAccountPath);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
