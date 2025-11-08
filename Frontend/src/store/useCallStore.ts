@@ -8,7 +8,9 @@ import { useChatStore } from "./useChatStore";
 const { authUser } = userStore.getState();
 const {selectedUser}=useChatStore.getState()
 
-export const useCallStore = create<CallState>((set, get) => ({
+export const useCallStore = create<CallState>(
+  (set, get) => ({
+
     localStream: null,
     remoteStream: null,
     peerConnection: null,
@@ -21,11 +23,15 @@ export const useCallStore = create<CallState>((set, get) => ({
     outgingCall:null,
     videoCall: false,
     voiceCall:false,
+
     setVoiceCall:(voiceCall)=>set({voiceCall}),
+
     setVideoCall:(videoCall)=>set({videoCall}),
+
     setOutgoingCall:(user)=> {
       set({outgingCall:user})
     },
+    
     setcall: (value) => set((state) => ({ call:typeof value==='boolean'?value:!state.call })),
     
     //Initialize socket listeners

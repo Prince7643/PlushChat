@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 import type { userStoreType } from '../Types/interface';
 import { axiosInstance } from '../lib/axios';
 import toast from 'react-hot-toast';
+
 const sessionStorageWrapper = {
   getItem: (name: string) => {
     const value = sessionStorage.getItem(name);
@@ -19,11 +20,18 @@ const sessionStorageWrapper = {
 export const userStore = create<userStoreType>()(
   persist(
     (set, get) => ({
+
       authUser: null,
+      searchUser:[],
       isDark: false,
+      notification: [],
       isCheckingAuth: true,
       onlineUsers: [],
+
       setOnlineUsers: (users) => set({ onlineUsers: users }),
+
+      setAuthUser: (user) => set({ authUser: { user:{ ...user } }}),
+
       checkAuth: async () => {
         try {
           const res = await axiosInstance.get('/api/user/checkAuth');
@@ -34,6 +42,7 @@ export const userStore = create<userStoreType>()(
           set({ isCheckingAuth: false });
         }
       },
+
       login: async (data) => {
         try {
           const res = await axiosInstance.post('/api/user/login', data);
@@ -50,10 +59,11 @@ export const userStore = create<userStoreType>()(
           });
         }
       },
-      notification: [],
+
       setNotification: (notifi) => {
         set({notification:notifi});
       },
+
       logout: async () => {
         try {
           const res = await axiosInstance.post('/api/user/logout');
@@ -69,6 +79,7 @@ export const userStore = create<userStoreType>()(
           });
         }
       },
+
       sendFriendRequest:async (contactId)=>{
         try {
           const res=await axiosInstance.post(`/api/contact/send`,{contactId})
@@ -84,6 +95,7 @@ export const userStore = create<userStoreType>()(
           });
         }
       },
+
       acceptFriendRequest:async (contactId,userId)=>{
         try {
           const res=await axiosInstance.post(`/api/contact/accept`,{contactId,userId})
@@ -92,6 +104,7 @@ export const userStore = create<userStoreType>()(
           console.log(error)
         }
       },
+
       rejectFriendRequest:async (userId)=>{
         try {
           const res=await axiosInstance.post(`/api/contact/reject`,userId)
@@ -100,7 +113,7 @@ export const userStore = create<userStoreType>()(
           console.log(error)
         }
       },
-      searchUser:[],
+
       setsearchUser:async (username)=>{
         try {
           if(!username) return
@@ -110,6 +123,7 @@ export const userStore = create<userStoreType>()(
           set({searchUser:[]}) 
         }
       },
+
       getNotification:async()=>{
         try {
           const res=await axiosInstance.get('/api/notification/get')
@@ -118,6 +132,7 @@ export const userStore = create<userStoreType>()(
           console.log(error)
         }
       },
+
       signup: async (data) => {
         try {
           const res = await axiosInstance.post('/api/user/signup', data);
@@ -134,10 +149,12 @@ export const userStore = create<userStoreType>()(
           set({ authUser: null });
         }
       },
+
       setIsDark() {
         const { isDark } = get();
         set({ isDark: !isDark });
       },
+      
       saveToken:async (token:any)=>{
         try {
           await axiosInstance.post('/api/user/save-fcm-token',{token})

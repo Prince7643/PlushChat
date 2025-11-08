@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { CheckCircle, XCircle, Loader2 } from "lucide-react";
-import axios from "axios";
 import { useChatStore } from "../store/useChatStore";
 import { userStore } from "../store/useAuthStore";
 import { Timer } from "../components/EmailSent";
+import { axiosInstance } from "../lib/axios";
 
 export function VerifyEmail() {
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
@@ -19,7 +19,7 @@ export function VerifyEmail() {
       if (!token) return setStatus("error");
 
       try {
-        const res = await axios.get(`http://localhost:3000/api/user/verifyemail?token=${token}`);
+        const res = await axiosInstance.get(`/api/user/verifyemail?token=${token}`);
         console.log(res.data);
         setStatus("success");
       } catch (error) {

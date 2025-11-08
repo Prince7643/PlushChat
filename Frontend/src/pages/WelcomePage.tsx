@@ -17,14 +17,14 @@ export default function WelcomePage() {
       >
         {/* Logo */}
         <div className="flex justify-center mb-6">
-          <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-r from-yellow-700 to-yellow-400 flex items-center justify-center shadow-lg">
             <span className="text-2xl sm:text-3xl md:text-4xl font-bold">💬</span>
           </div>
         </div>
 
         {/* Title */}
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 tracking-tight">
-          Welcome to <span className="text-indigo-400">PulseChat</span>
+          Welcome to <span className="bg-gradient-to-r bg-clip-text text-transparent from-yellow-700 to-yellow-400">PulseChat</span>
         </h1>
 
         {/* Subtitle */}
@@ -38,7 +38,7 @@ export default function WelcomePage() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-8 py-3 w-full sm:w-auto rounded-xl shadow-md transition"
+              className="bg-gradient-to-r  from-yellow-700 to-yellow-400 text-white font-semibold px-8 py-3 w-full sm:w-auto rounded-xl shadow-md transition"
             >
               Get Started
             </motion.button>
@@ -48,7 +48,7 @@ export default function WelcomePage() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="border border-gray-600 hover:border-indigo-500 hover:text-indigo-400 px-8 py-3 w-full sm:w-auto rounded-xl font-semibold transition"
+              className="border border-gray-600 hover:border-yellow-500 hover:text-yellow-400 px-8 py-3 w-full sm:w-auto rounded-xl font-semibold transition"
             >
               Login
             </motion.button>

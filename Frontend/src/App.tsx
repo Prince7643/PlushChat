@@ -10,6 +10,7 @@ import { onMessageListener,getTokenRequest } from "./lib/firebase";
 import { VerifyEmail } from "./pages/verificationpage";
 import { EmailSent } from "./components/EmailSent";
 import { Toaster } from 'react-hot-toast'
+import {PloadProfilePic} from "./pages/PloadProfilePic";
 
 const App = () => {
   const initCallEvents = useCallStore((state) => state.initCallEvents);
@@ -45,27 +46,72 @@ const App = () => {
     };
     setupMessaging();
   }, [saveToken]);
+  console.log("ProfilePic:",authUser?.user.profilePic)
   return (
     <>
       <Toaster position="top-center" reverseOrder={false}/>
       <Routes>
-        <Route path="/"
-        element={!authUser ? <WelcomePage /> : <Navigate to="/chat" replace />} />
+        {/* Public Routes */}
+        <Route
+          path="/"
+          element={!authUser ? <WelcomePage /> : <Navigate to="/chat" replace />}
+        />
+
         <Route
           path="/login"
-          element={!authUser ? <LoginPage /> : <Navigate to="/chat" replace />}
+          element={
+            !authUser ? (
+              <LoginPage />
+            ) : !authUser.user?.profilePic || authUser.user?.profilePic.trim() === "" ? (
+              <Navigate to="/setup-profile" replace />
+            ) : (
+              <Navigate to="/chat" replace />
+            )
+          }
         />
-        <Route path="/verify-email" element={authUser?.user?.isVerified ? <Navigate to="/chat" replace />: <VerifyEmail />} />
+
         <Route
           path="/signup"
-          element={!authUser ? <SignupPage /> : <EmailSent/>}
+          element={!authUser ? <SignupPage /> : <Navigate to="/verify-email" replace />}
         />
-        <Route 
-          path='/chat'
-          element={authUser?.user.isVerified? <ChatPage /> :<EmailSent/>}
+
+        <Route
+          path="/verify-email"
+          element={
+            authUser
+              ? authUser.user?.isVerified
+                ? <Navigate to="/chat" replace />
+                : <EmailSent />
+              : <VerifyEmail />
+          }
         />
-        {/* Add more routes here */}
+
+        {/* Protected Chat Route */}
+        <Route
+          path="/chat"
+          element={
+            authUser
+              ? authUser.user?.isVerified
+                ? <ChatPage />
+                : <Navigate to="/verify-email" replace />
+              : <Navigate to="/" replace />
+          }
+        />
+        <Route
+          path="/setup-profile"
+          element={
+          authUser
+            ? !authUser.user.profilePic  || authUser.user?.profilePic.trim() === ""
+              ? <PloadProfilePic />
+              : <Navigate to="/chat" replace />
+            : <Navigate to="/login" replace />
+          }
+        />
+
+        {/* Catch all - optional */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+
     </>
   );
 };

@@ -1,6 +1,7 @@
 
 export interface userStoreType {
     authUser:{user:User}|null,
+    setAuthUser:(user:User)=>void
     isCheckingAuth:boolean,
     notification:NotificationType[],
     setNotification:(notification:NotificationType[])=>void

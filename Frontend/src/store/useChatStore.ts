@@ -42,6 +42,7 @@ export const useChatStore = create<ChatStore>((set, get) => {
         contacts: res.data.contacts,
       });
     } catch (error:any) {
+      console.log(error)
       toast.error(error.response?.data?.msg||"Error in getContact")
     }
   };
