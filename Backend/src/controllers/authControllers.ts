@@ -26,7 +26,12 @@ export async function signup(req:Request<{},{},UserBody>,res:Response) {
             return res.status(400).json({ msg: "Invalid email" });
         }
 
-        const userExist = await User.findOne({ email });
+        const [pendingUser, existingUser] = await Promise.all([
+            PendingUser.findOne({ email }),User.findOne({ email })
+        ]);
+
+        const userExist = pendingUser || existingUser;
+
         if (userExist) {
             return res.json({ msg: "User already exists" });
         }
