@@ -1,44 +1,32 @@
-import nodemailer from 'nodemailer'
+import sgMail from "@sendgrid/mail";
 
+sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
 
-const emailService = async ( 
-    email:string, 
-    subject:string, 
-    content:{username:string,verifyLink:string}, 
-    tamplate:<T>(data:T)=>string
-):Promise<void> => {
- console.log("EMAIL:", process.env.EMAIL);
-console.log("PASSWORD:", process.env.PASSWORD ? "Loaded" : "Missing");
+const emailService = async (
+  email: string,
+  subject: string,
+  content: { username: string; verifyLink: string },
+  template: <T>(data: T) => string
+): Promise<void> => {
+  try {
+    const html = template(content);
 
-    try {
-        const transport = nodemailer.createTransport({
-        service: 'gmail',
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false,
-        auth: {
-            user: process.env.EMAIL,
-            pass: process.env.PASSWORD
-        }
-    })
+    const msg = {
+      to: email,
+      from: {
+        name: "MyApp",
+        email: "rahul@gmail.com", // <-- your verified Gmail
+      },
+      subject,
+      html,
+    };
 
-    const html=tamplate(content)
+    await sgMail.send(msg);
+    console.log("✅ Email sent successfully to:", email);
+  } catch (error) {
+    console.error("❌ SendGrid Error:", error);
+    throw error;
+  }
+};
 
-    const mailOption:nodemailer.SendMailOptions={
-        from:process.env.EMAIL,
-        to:email,
-        subject:subject,
-        html:html
-    }
-
-    await transport.sendMail(mailOption)
-    } catch (error) {
-        throw error
-    }
-
-
-}
-
-export default emailService
-
-//
+export default emailService;
