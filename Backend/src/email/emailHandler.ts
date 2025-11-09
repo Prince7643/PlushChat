@@ -15,7 +15,7 @@ const emailService = async (
       to: email,
       from: {
         name: "MyApp",
-        email: "rahul@gmail.com", // <-- your verified Gmail
+        email: process.env.EMAIL!, // <-- your verified Gmail
       },
       subject,
       html,
