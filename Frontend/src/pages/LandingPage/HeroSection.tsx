@@ -14,7 +14,7 @@ export default function HeroSection() {
   return (
     <>
       <div id="hero" className='mt-10 ml-9 mr-9 flex justify-between'>
-        <div className='text-5xl font-bold'>
+        <div className='text-3xl md:text-5xl  font-bold'>
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -24,7 +24,7 @@ export default function HeroSection() {
                 animate={{ rotate: [0, 360] }}
                 transition={{ duration: 5, repeat: Infinity,ease:"linear"}}
               >
-                <Zap size={50} className='text-yellow-400'/>
+                <Zap  className='text-yellow-400 size-10 md:size-15'/>
               </motion.div>
               <span>PlushChat</span>
           </motion.div>
@@ -57,7 +57,7 @@ export default function HeroSection() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               transition={{ duration: 0.2 }}
-              className='cursor-pointer hover:underline hover:text-yellow-400'
+              className='cursor-pointer px-3 py-1 rounded-2xl text-black md:text-white bg-yellow-500 hover:bg-yellow-400 md:bg-transparent md:hover:bg-transparent md:hover:text-yellow-400 md:hover:underline'
             >
               Login
             </motion.div>
@@ -66,7 +66,7 @@ export default function HeroSection() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               transition={{ duration: 0.2 }}
-              className='cursor-pointer rounded-full text-black px-3 py-1 bg-yellow-500 hover:bg-yellow-400 font-semibold'
+              className='cursor-pointer rounded-full text-black px-3 py-1 bg-yellow-500 hover:bg-yellow-400 font-semibold hidden md:block'
             >
               Get Started
             </motion.div>
