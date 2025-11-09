@@ -2,7 +2,7 @@ import { userStore } from '../store/useAuthStore'
 import type { SearchUserType } from '../Types/interface'
 import { defalutImg } from '../Types/interface'
 import { useChatStore } from '../store/useChatStore'
-
+import {motion} from 'framer-motion'
 const SearchUsers: React.FC<SearchUserType> = ({ search }) => {
   const { isDark, sendFriendRequest } = userStore()
   const { contacts, setSelectedUser } = useChatStore()
@@ -12,8 +12,6 @@ const SearchUsers: React.FC<SearchUserType> = ({ search }) => {
     (contact) =>contact.contactId === search?._id
       
   )
-  console.log(isContact)
-  console.log(search?._id)
   // Decide whether to show "Send Request" or status
   const showSendButton = !isContact || isContact.status === 'Send'
 
@@ -22,7 +20,7 @@ const SearchUsers: React.FC<SearchUserType> = ({ search }) => {
       onClick={() => setSelectedUser(search!)}
       className={`flex ${
         isDark ? 'hover:bg-[#373737]' : 'hover:bg-[#EBEBEE]'
-      } cursor-pointer font-bold h-20 overflow-hidden items-center pl-4 gap-5`}
+      } cursor-pointer font-bold h-20 rounded-2xl overflow-hidden items-center pl-4 gap-5`}
     >
       {/* Profile Image and Username */}
       <div className="flex items-center">
@@ -41,17 +39,19 @@ const SearchUsers: React.FC<SearchUserType> = ({ search }) => {
       {/* Right side: Button or Status */}
       <div className="ml-auto pr-4">
         {showSendButton ? (
-          <div
+          <motion.div
+            whileHover={{scale:1.05}}
+            whileTap={{scale:0.95}}
             onClick={(e) => {
               e.stopPropagation()
               sendFriendRequest(search?._id || '')
             }}
-            className="bg-accent text-white rounded-2xl text-sm px-3 py-1 cursor-pointer"
+            className="bg-yellow-500 text-white rounded-2xl text-sm px-3 py-1 cursor-pointer"
           >
             Send Request
-          </div>
+          </motion.div>
         ) :isContact.status==="Pending" ?(
-          <div className="flex text-gray-400 text-sm">
+          <div className="flex  border text-gray-500 outline outline-black outline-offset-1 shadow-2xl rounded-2xl text-sm px-3 py-1">
             Status: {isContact?.status}
           </div>
         ):""}

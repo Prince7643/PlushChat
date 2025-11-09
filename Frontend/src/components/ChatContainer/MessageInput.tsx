@@ -93,7 +93,7 @@ function MessageInput() {
         <button
           type="submit"
           disabled={!text.trim()}
-          className=" flex items-center justify-center rounded-2xl p-2 bg-gradient-to-r bg-cyan-400 font-medium hover:bg-cyan-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          className=" flex items-center justify-center rounded-2xl p-2 bg-gradient-to-r bg-[#1565C0] font-medium hover:bg-[#1565C0] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <SendIcon className={`${isDark?"text-white":"text-black"}`}/>
         </button>

@@ -21,7 +21,6 @@ const SidebarBody = () => {
     isNotificationCall, 
     setIsSearch
   } = useChatStore();
-
   const renderContent = () => {
     if (isChatClick && Array.isArray(Chats)&&Chats.length>0) {
       return Chats.map((chat) => <Messages key={chat._id} {...chat} chat={chat} />);

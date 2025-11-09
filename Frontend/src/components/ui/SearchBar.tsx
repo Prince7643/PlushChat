@@ -53,7 +53,7 @@ const SearchBar = () => {
       <button
         onClick={()=>{searchUser.length>0&&(setIsChatClick(false),setIsContactClick(false))}}
         type="submit"
-        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full"
+        className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-full"
       >
         Go
       </button>

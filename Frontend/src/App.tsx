@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import WelcomePage from "./pages/WelcomePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import { userStore } from "./store/useAuthStore";
@@ -11,6 +10,8 @@ import { VerifyEmail } from "./pages/verificationpage";
 import { EmailSent } from "./components/EmailSent";
 import { Toaster } from 'react-hot-toast'
 import {PloadProfilePic} from "./pages/PloadProfilePic";
+import LandingPage from "./pages/LandingPage/LandingPage";
+
 
 const App = () => {
   const initCallEvents = useCallStore((state) => state.initCallEvents);
@@ -54,7 +55,7 @@ const App = () => {
         {/* Public Routes */}
         <Route
           path="/"
-          element={!authUser ? <WelcomePage /> : <Navigate to="/chat" replace />}
+          element={!authUser ? <LandingPage /> : <Navigate to="/chat" replace />}
         />
 
         <Route

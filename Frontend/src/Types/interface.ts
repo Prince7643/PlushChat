@@ -80,6 +80,8 @@ export interface Chat {
     isOnline:boolean,
     lastOnline:string,
     profilePic:string
+    isVerified:boolean,
+
     chat:Chat
 }
 export interface NotificationType{
