@@ -19,7 +19,7 @@ export const useChatStore = create<ChatStore>((set, get) => {
   }
   const setseenNotification=async (type:string) => {
     try {
-      const res=await axiosInstance.post('/api/notification/markAsSeen',{type})
+      await axiosInstance.post('/api/notification/markAsSeen',{type})
       set({unseenNotification:[]})
     } catch (error) {
 

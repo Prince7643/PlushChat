@@ -36,7 +36,7 @@ export const useCallStore = create<CallState>(
     
     //Initialize socket listeners
     initCallEvents: () => {
-    const peerConnection = get().peerConnection;
+     get().peerConnection;
 
     socket.on("incomingCall", async ({ from, offer }) => {
       set({ remoteSocketId: from, offer, incomingCall: true, call:true });
@@ -50,7 +50,7 @@ export const useCallStore = create<CallState>(
     socket.on("iceCandidate", ({ candidate }) => {
       get().peerConnection?.addIceCandidate(new RTCIceCandidate(candidate));
     });
-    socket.on("callInitiated", ({ to }) => {
+    socket.on("callInitiated", () => {
       set({ outgingCall: selectedUser, call: true });
     });
 
@@ -97,7 +97,7 @@ export const useCallStore = create<CallState>(
         offer,
         callerId:authUser?.user._id
       });
-      socket.on("userOffline", ({ userToCall }) => {
+      socket.on("userOffline", () => {
         if (selectedUser) {
         get().setOutgoingCall(selectedUser)
       }
