@@ -1,9 +1,9 @@
 import { Mail } from "lucide-react";
 import { useEffect, useState } from "react";
-import { userStore } from "../store/useAuthStore";
+import { useUserStore } from "../store/useAuthStore";
 import { useChatStore } from "../store/useChatStore";
 export function EmailSent() {
-  const {authUser}=userStore()
+  const {authUser}=useUserStore()
   const {sendverifyemail}=useChatStore()
   const handlesend=()=>{
     if (!authUser?.user.email) return

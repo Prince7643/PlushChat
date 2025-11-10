@@ -2,7 +2,7 @@
 import { useRef, useState } from "react";
 import { SendIcon } from "lucide-react";
 import { useChatStore } from "../../store/useChatStore";
-import { userStore } from "../../store/useAuthStore";
+import { useUserStore } from "../../store/useAuthStore";
 import { socket } from "../../lib/sockets";
 import EmojiPicker ,{Theme} from "emoji-picker-react";
 import { SmilePlus } from "lucide-react";
@@ -11,7 +11,7 @@ function MessageInput() {
 
   const [text, setText] = useState("");
   const {selectedUser}=useChatStore()
-  const { isDark,authUser } = userStore()
+  const { isDark,authUser } = useUserStore()
   const [showEmoji,setShowEmoji]=useState(false)
   const isMoble=/Mobi|Andorid/i.test(navigator.userAgent)
   const [typing,setTyping]=useState(false)

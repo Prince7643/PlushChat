@@ -1,10 +1,10 @@
-import { userStore } from '../store/useAuthStore'
+import { useUserStore } from '../store/useAuthStore'
 import type { SearchUserType } from '../Types/interface'
 import { defalutImg } from '../Types/interface'
 import { useChatStore } from '../store/useChatStore'
 import {motion} from 'framer-motion'
 const SearchUsers: React.FC<SearchUserType> = ({ search }) => {
-  const { isDark, sendFriendRequest } = userStore()
+  const { isDark, sendFriendRequest } = useUserStore()
   const { contacts, setSelectedUser } = useChatStore()
   
   // Find if this user is already in contacts

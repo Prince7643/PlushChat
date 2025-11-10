@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { CheckCircle, XCircle, Loader2 } from "lucide-react";
 import { useChatStore } from "../store/useChatStore";
-import { userStore } from "../store/useAuthStore";
+import { useUserStore } from "../store/useAuthStore";
 import { Timer } from "../components/EmailSent";
 import { axiosInstance } from "../lib/axios";
 
 export function VerifyEmail() {
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
-  const {authUser}=userStore()
+  const {authUser}=useUserStore()
   const {sendverifyemail}=useChatStore()
   const handlesend=()=>{
     if (!authUser?.user.email) return

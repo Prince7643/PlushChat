@@ -1,10 +1,11 @@
+// src/store/useAuthStore.ts
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { userStoreType } from "../Types/interface";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 
-export const userStore = create<userStoreType>()(
+export const useUserStore = create<userStoreType>()(
   persist(
     (set, get) => ({
       authUser: null,
@@ -15,7 +16,6 @@ export const userStore = create<userStoreType>()(
       onlineUsers: [],
 
       setOnlineUsers: (users) => set({ onlineUsers: users }),
-
       setAuthUser: (user) => set({ authUser: { user } }),
 
       checkAuth: async () => {
@@ -57,7 +57,6 @@ export const userStore = create<userStoreType>()(
       signup: async (data) => {
         try {
           const res = await axiosInstance.post("/api/user/signup", data);
-          console.log(res.data);
           if (res.status === 200) {
             set({ authUser: res.data });
             toast.success("Signup successful 🎉");
@@ -91,8 +90,7 @@ export const userStore = create<userStoreType>()(
 
       rejectFriendRequest: async (userId) => {
         try {
-          const res = await axiosInstance.post(`/api/contact/reject`, userId);
-          console.log(res.data);
+          await axiosInstance.post(`/api/contact/reject`, userId);
         } catch (error) {
           console.log(error);
         }
@@ -132,9 +130,10 @@ export const userStore = create<userStoreType>()(
     }),
     {
       name: "auth-store",
-      storage: createJSONStorage(() => localStorage), // ✅ Always valid in browser
-      partialize: (state) => ({ authUser: state.authUser }), // ✅ optional: only save auth
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ authUser: state.authUser }),
     }
   )
 );
+
 console.log("Zustand persist loaded ✅");

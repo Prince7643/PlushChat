@@ -1,10 +1,10 @@
-import { userStore } from "../../store/useAuthStore";
+import { useUserStore } from "../../store/useAuthStore";
 import SidebarHeader from "./SidebarHeader";
 import SidebarBody from "./SidebarBody";
 import SidebarFooter from "./SidebarFooter";
 
 const Sidebar = () => {
-    const { isDark }=userStore()
+    const { isDark }=useUserStore()
   return (
     <aside 
         className={`flex flex-col h-full ${

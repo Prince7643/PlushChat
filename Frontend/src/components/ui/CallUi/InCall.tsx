@@ -1,7 +1,7 @@
 import { Mic, MicOff, PhoneOff, Repeat, Video, VideoOff } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useCallStore } from '../../../store/useCallStore'
-import { userStore } from '../../../store/useAuthStore'
+import { useUserStore } from '../../../store/useAuthStore'
 
 const InCall = () => {
     const localVideoRef=useRef<HTMLVideoElement>(null)
@@ -11,7 +11,7 @@ const InCall = () => {
     const [muted, setMuted] = useState(false);
     const [cameraOff, setCameraOff] = useState(false);
     const {  endCall, videoCall, voiceCall, setcall, localStream, remoteStream } = useCallStore();
-    const {authUser}=userStore()
+    const {authUser}=useUserStore()
     
     useEffect(() => {
         if (localVideoRef.current && localStream) localVideoRef.current.srcObject = localStream;

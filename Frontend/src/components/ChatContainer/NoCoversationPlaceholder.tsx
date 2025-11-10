@@ -1,9 +1,9 @@
 
 import { MessageCircleIcon } from "lucide-react";
-import { userStore } from "../../store/useAuthStore";
+import { useUserStore } from "../../store/useAuthStore";
 
 const NoConversationPlaceholder = () => {
-  const {isDark }= userStore()
+  const {isDark }= useUserStore()
   return (
     <div className="flex flex-col items-center justify-center h-full text-center p-6">
       <div className="size-20 bg-cyan-500/20 rounded-full flex items-center justify-center mb-6">

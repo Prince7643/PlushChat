@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { userStore } from "../store/useAuthStore";
+import { useUserStore } from "../store/useAuthStore";
 import { axiosInstance } from "../lib/axios";
 import { toast } from "react-hot-toast";
 import { Loader2, UserRound, UploadCloud } from "lucide-react";
 
  export const PloadProfilePic = () => {
   const navigate = useNavigate();
-  const { setAuthUser } = userStore();
+  const { setAuthUser } = useUserStore();
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);

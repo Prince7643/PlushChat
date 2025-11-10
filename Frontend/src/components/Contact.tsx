@@ -1,11 +1,11 @@
 
-import { userStore } from '../store/useAuthStore'
+import { useUserStore } from '../store/useAuthStore'
 import { useChatStore } from '../store/useChatStore'
 import type { ContactProps } from '../Types/interface'
 import {defalutImg} from '../Types/interface'
 const ContactProfile:React.FC<ContactProps> = ({contact}) => {
   const {setSelectedUser}=useChatStore()
-  const {isDark}=userStore()
+  const {isDark}=useUserStore()
   return (
     <div onClick={()=>setSelectedUser(contact!)} className={`flex ${isDark?"hover:bg-[#373737]":"hover:bg-[#EBEBEE]"} cursor-pointer text-white font-bold h-20 contain overflow-hidden`}>
         <div className='flex items-center pl-4 text-center'>

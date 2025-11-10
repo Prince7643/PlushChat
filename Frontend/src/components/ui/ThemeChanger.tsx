@@ -1,10 +1,10 @@
-import { userStore } from "../../store/useAuthStore"
+import { useUserStore } from "../../store/useAuthStore"
 import {
   Sun,
   Moon,
 } from "lucide-react";
 const ThemeChanger = () => {
-  const { isDark, setIsDark}=userStore()
+  const { isDark, setIsDark}=useUserStore()
   const toggleTheme = () => {
     setIsDark();
   };

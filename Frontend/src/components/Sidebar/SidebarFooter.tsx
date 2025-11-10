@@ -1,6 +1,6 @@
 import { MessageSquareQuote, UserRound, Phone, Bell } from "lucide-react";
 import { useChatStore } from "../../store/useChatStore";
-import { userStore } from "../../store/useAuthStore";
+import { useUserStore } from "../../store/useAuthStore";
 
 const SidebarFooterIcon = ({ isActive, onClick, icon: Icon, badgeCount = 0, isDark }: any) => (
   <div
@@ -23,7 +23,7 @@ const SidebarFooter = () => {
     isDark,
     setsearchUser,
     notification
-  } = userStore();
+  } = useUserStore();
   const {
     setIsChatClick,
     setIsContactClick,

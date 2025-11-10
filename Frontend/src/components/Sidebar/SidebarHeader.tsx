@@ -1,9 +1,9 @@
 import { LogOutIcon } from "lucide-react"
 import ThemeChanger from "../ui/ThemeChanger"
-import { userStore } from "../../store/useAuthStore"
+import { useUserStore } from "../../store/useAuthStore"
 
 const SidebarHeader = () => {
-    const {logout,isDark}=userStore()
+    const {logout,isDark}=useUserStore()
   return (
         <header className="flex items-center justify-between p-4 border-b border-gray-700">
             <h1 className="text-2xl font-bold bg-gradient-to-r from-yellow-700 to-yellow-400 text-transparent bg-clip-text">

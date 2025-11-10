@@ -1,11 +1,11 @@
 import { create } from "zustand";
 import {socket} from '../lib/sockets'
-import { userStore } from "./useAuthStore";
+import { useUserStore } from "./useAuthStore";
 import type { CallState } from "../Types/interface";
 import { useChatStore } from "./useChatStore";
 
 
-const { authUser } = userStore.getState();
+const { authUser } = useUserStore.getState();
 const {selectedUser}=useChatStore.getState()
 
 export const useCallStore = create<CallState>(

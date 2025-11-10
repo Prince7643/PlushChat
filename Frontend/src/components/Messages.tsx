@@ -1,4 +1,4 @@
-import { userStore } from '../store/useAuthStore';
+import { useUserStore } from '../store/useAuthStore';
 import { useChatStore } from '../store/useChatStore'
 import type { Chat } from '../Types/interface'
 import { defalutImg  } from '../Types/interface';
@@ -6,7 +6,7 @@ import { defalutImg  } from '../Types/interface';
 const Messages:React.FC<Chat> = ({username, profilePic,chat}) => {
 
   const {setSelectedUser,unReadMessages}=useChatStore();
-  const {isDark}=userStore()
+  const {isDark}=useUserStore()
   const unReadMeg=unReadMessages[chat._id]
   return (
     <div 

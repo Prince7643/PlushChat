@@ -4,14 +4,14 @@ import { useChatStore } from '../../store/useChatStore'
 import { useEffect } from 'react'
 import { socket } from '../../lib/sockets'
 import { useCallStore } from '../../store/useCallStore'
-import { userStore } from '../../store/useAuthStore'
+import { useUserStore } from '../../store/useAuthStore'
 import { defalutImg } from '../../Types/interface'
 
 const ChatHeader = () => {
 
     const {setSelectedUser,selectedUser}=useChatStore()
     const {startCall ,setcall,setVideoCall,setVoiceCall}=useCallStore()
-    const {setOnlineUsers,onlineUsers}=userStore()
+    const {setOnlineUsers,onlineUsers}=useUserStore()
     useEffect(()=>{
         const handLeEscKey=(event: { key: string })=>{
             if(event.key==='Escape'){

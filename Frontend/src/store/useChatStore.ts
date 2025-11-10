@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import type { ChatStore } from "../Types/interface";
-import { userStore } from "./useAuthStore";
+import { useUserStore } from "./useAuthStore";
 import toast from "react-hot-toast";
 
 export const useChatStore = create<ChatStore>((set, get) => {
@@ -58,7 +58,7 @@ export const useChatStore = create<ChatStore>((set, get) => {
 
   const sendMessage = async (messageData: string) => {
     const { selectedUser, messages } = get();
-    const { authUser } = userStore.getState();
+    const { authUser } = useUserStore.getState();
 
     if (!authUser || !selectedUser) return;
 
@@ -97,7 +97,7 @@ export const useChatStore = create<ChatStore>((set, get) => {
 
     if (!selectedUser || selectedUser._id !== msg.senderId) {
       const {senderId, receiverId} = msg;
-      const currentUser=userStore.getState().authUser?.user._id;
+      const currentUser=useUserStore.getState().authUser?.user._id;
       console.log(currentUser+" ",receiverId+" ",senderId)
       if (receiverId==currentUser) {
           set({

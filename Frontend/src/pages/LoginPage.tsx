@@ -2,10 +2,10 @@ import { useState } from "react"
 import { Mail,Lock } from "lucide-react"
 import { Link } from "react-router-dom"
 import { assests } from "../assets/assets"
-import { userStore } from "../store/useAuthStore"
+import { useUserStore } from "../store/useAuthStore"
 import { motion } from 'framer-motion'
 const LoginPage = () => {
-  const {login}=userStore()
+  const {login}=useUserStore()
   const [fonmData,setFormData]=useState({
     username:'',
     email:'',

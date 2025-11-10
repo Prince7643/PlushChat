@@ -1,7 +1,7 @@
 import Sidebar from "../components/Sidebar";
 import { ChatContainer } from "../components/ChatContainer/ChatContainer";
 import { useChatStore } from "../store/useChatStore";
-import { userStore } from "../store/useAuthStore";
+import { useUserStore } from "../store/useAuthStore";
 import { CallUi } from "../components/ui/CallUi/CallUi";
 import { useCallStore } from "../store/useCallStore";
 import NoConversationPlaceholder from "../components/ChatContainer/NoCoversationPlaceholder";
@@ -9,7 +9,7 @@ import { useEffect } from "react";
 
 const ChatPage = () => {
   const { selectedUser,getContact,getsChats,getUnseenNotification } = useChatStore();
-  const {isDark,getNotification}=userStore()
+  const {isDark,getNotification}=useUserStore()
   const {call}=useCallStore()
   useEffect(()=>{
         getsChats(),

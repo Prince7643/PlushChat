@@ -1,11 +1,11 @@
 import { Search } from "lucide-react";
 import { useState } from "react";
-import { userStore } from "../../store/useAuthStore";
+import { useUserStore } from "../../store/useAuthStore";
 import { useChatStore } from "../../store/useChatStore";
 
 const SearchBar = () => {
   const [query, setQuery] = useState("");
-  const {setsearchUser,searchUser} = userStore();
+  const {setsearchUser,searchUser} = useUserStore();
   const {setIsChatClick,setIsContactClick}=useChatStore()
 
   const handleSubmit = (e: React.FormEvent) => {

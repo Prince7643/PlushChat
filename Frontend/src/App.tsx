@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-import { userStore } from "./store/useAuthStore";
+import { useUserStore } from "./store/useAuthStore";
 import ChatPage from "./pages/ChatPage";
 import { useCallStore } from "./store/useCallStore";
 import { onMessageListener, getTokenRequest } from "./lib/firebase";
@@ -14,19 +14,19 @@ import LandingPage from "./pages/LandingPage/LandingPage";
 
 const App = () => {
   const initCallEvents = useCallStore((state) => state.initCallEvents);
-  const saveToken = userStore((state) => state.saveToken);
-  const authUser = userStore((state) => state.authUser);
+  const saveToken = useUserStore((state) => state.saveToken);
+  const authUser = useUserStore((state) => state.authUser);
   const [hydrated, setHydrated] = useState(false);
 
   // ✅ FIXED HYDRATION LOGIC
   useEffect(() => {
-    const unsub = userStore.persist.onFinishHydration(() => {
+    const unsub = useUserStore.persist.onFinishHydration(() => {
       console.log("✅ Zustand rehydrated");
       setHydrated(true);
     });
 
     // Trigger hydration manually (in case not started yet)
-    userStore.persist.rehydrate();
+    useUserStore.persist.rehydrate();
 
     // Cleanup on unmount
     return () => unsub?.();

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { userStore } from "../../store/useAuthStore";
+import { useUserStore } from "../../store/useAuthStore";
 import { useChatStore } from "../../store/useChatStore";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
@@ -9,7 +9,7 @@ import {defalutImg} from '../../Types/interface'
 import MessageList from "./MessageList";
 
 export const ChatContainer = () => {
-  const {authUser}=userStore()
+  const {authUser}=useUserStore()
   const { messages,getMessageByUserId,selectedUser,addMessage } = useChatStore();
   const messageEndRef=useRef<HTMLDivElement>(null)
   const [typeing,setTyping]=useState(false)

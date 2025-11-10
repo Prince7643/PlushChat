@@ -1,9 +1,9 @@
-import { userStore } from "../store/useAuthStore"
+import { useUserStore } from "../store/useAuthStore"
 import { useChatStore } from "../store/useChatStore"
 import { defalutImg, type NotificationType } from "../Types/interface"
 
 const Notification:React.FC<NotificationType> = ({sender,message}) => {
-  const {isDark,acceptFriendRequest}=userStore()
+  const {isDark,acceptFriendRequest}=useUserStore()
   const {contacts}=useChatStore()
   const isContact=contacts?.find((contact)=>contact.contactId===sender?._id)
   console.log(isContact)

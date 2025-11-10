@@ -1,4 +1,4 @@
-import { userStore } from "../../store/useAuthStore";
+import { useUserStore } from "../../store/useAuthStore";
 import { useChatStore } from "../../store/useChatStore";
 import SearchBar from "../ui/SearchBar";
 import Messages from "../Messages";
@@ -10,7 +10,7 @@ const SidebarBody = () => {
   const { 
     searchUser, 
     notification 
-  } = userStore();
+  } = useUserStore();
   const { 
     Chats, 
     contactUser, 

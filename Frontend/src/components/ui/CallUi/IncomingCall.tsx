@@ -1,10 +1,10 @@
 import { Phone, PhoneIncoming, PhoneOff } from "lucide-react"
 import { useCallStore } from "../../../store/useCallStore"
-import { userStore } from "../../../store/useAuthStore"
+import { useUserStore } from "../../../store/useAuthStore"
 
 const IncomingCall = () => {
   const { answerCall,endCall,setcall }=useCallStore()
-  const { authUser }=userStore()
+  const { authUser }=useUserStore()
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-black text-white">
