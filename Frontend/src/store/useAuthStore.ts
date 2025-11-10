@@ -57,7 +57,7 @@ export const useUserStore = create<userStoreType>()(
       signup: async (data) => {
         try {
           const res = await axiosInstance.post("/api/user/signup", data);
-          if (res.status === 200) {
+          if (res.status === 201) {
             set({ authUser: res.data });
             toast.success("Signup successful 🎉");
           }
