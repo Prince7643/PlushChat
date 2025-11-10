@@ -2,13 +2,21 @@ import { Mail } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useUserStore } from "../store/useAuthStore";
 import { useChatStore } from "../store/useChatStore";
+import { useNavigate } from "react-router-dom";
 export function EmailSent() {
   const {authUser}=useUserStore()
   const {sendverifyemail}=useChatStore()
+  const navigate =useNavigate()
   const handlesend=()=>{
     if (!authUser?.user.email) return
     sendverifyemail(authUser?.user.email)
   }
+  useEffect(()=>{
+    if (!authUser?.user.email) return
+    if (authUser.user.isVerified) {
+      navigate("/chat", { replace: true })
+    }
+  },[authUser?.user.email])
   return (
     <div className="flex items-center justify-center h-screen bg-gradient-to-br bg-[#0e0e10]">
       <div className="bg-white p-8 rounded-2xl shadow-xl text-center max-w-md">

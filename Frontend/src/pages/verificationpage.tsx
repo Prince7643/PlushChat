@@ -7,7 +7,7 @@ import { axiosInstance } from "../lib/axios";
 
 export function VerifyEmail() {
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
-  const {authUser}=useUserStore()
+  const {authUser,setAuthUser}=useUserStore()
   const {sendverifyemail}=useChatStore()
   const handlesend=()=>{
     if (!authUser?.user.email) return
@@ -20,7 +20,7 @@ export function VerifyEmail() {
 
       try {
         const res = await axiosInstance.get(`/api/user/verifyemail?token=${token}`);
-        console.log(res.data);
+        setAuthUser(res.data.user);
         setStatus("success");
       } catch (error) {
         console.error(error);
