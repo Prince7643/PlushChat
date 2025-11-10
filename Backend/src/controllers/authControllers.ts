@@ -38,13 +38,13 @@ export async function signup(req:Request<{},{},UserBody>,res:Response) {
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        const getLink =getverificationLink();        
+        const { verificationLink, verificationToken, verificationExpiresAt } = getverificationLink();
         const user = await PendingUser.create({ 
             username, 
             email, 
             password:hashedPassword,
-            verificationToken:getLink.verificationToken,
-            verificationTokenExpires:getLink.verificationExpiresAt, 
+            verificationToken,
+            verificationTokenExpires:verificationExpiresAt, 
             expiresAt:Date.now()+ 1000 * 60 * 60,
         });
         if (!user) {
@@ -54,7 +54,7 @@ export async function signup(req:Request<{},{},UserBody>,res:Response) {
             emailService(
                 email,
                 "Welcome to PlusChat",
-                { username: user.username, verifyLink: getLink.verificationLink },
+                { username: user.username, verifyLink:verificationLink },
                 registerUserTemplate
             )
         } catch (error) {
@@ -194,12 +194,11 @@ export async function SendverifyEmail(req:Request,res:Response) {
         if (!user) {
             return res.status(400).json({ msg: "User does not exist" });
         }
-        const getLink =getverificationLink()
-        const updatedUser = await PendingUser.findByIdAndUpdate(user._id, { verificationToken:getLink.verificationToken, verificationTokenExpires:getLink.verificationExpiresAt });
+        const { verificationLink, verificationToken, verificationExpiresAt } = getverificationLink();
+        const updatedUser = await PendingUser.findByIdAndUpdate(user._id, { verificationToken, verificationTokenExpires:verificationExpiresAt });
         if (!updatedUser) {
             return res.status(400).json({ msg: "Error sending email" });
         }
-        const verificationLink=getverificationLink().verificationLink;
         try {
             emailService(
                 email,
