@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import { useUserStore } from "./store/useAuthStore";
@@ -17,6 +17,9 @@ const App = () => {
   const saveToken = useUserStore((state) => state.saveToken);
   const authUser = useUserStore((state) => state.authUser);
   const [hydrated, setHydrated] = useState(false);
+  const location =useLocation()
+
+  const token= new URLSearchParams(location.search).get("token")
 
   // ✅ FIXED HYDRATION LOGIC
   useEffect(() => {
@@ -72,6 +75,21 @@ const App = () => {
       </div>
     );
   }
+
+  if (token) {
+    return <VerifyEmail />;
+  }
+
+  if (!authUser) {
+    return <Navigate to="/signup" replace />;
+  }
+
+  
+  if (authUser.user?.isVerified) {
+    return <Navigate to="/chat" replace />;
+  }
+
+
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
@@ -112,15 +130,11 @@ const App = () => {
         <Route
           path="/verify-email"
           element={
-            authUser ? (
-              authUser.user?.isVerified ? (
+            authUser.user?.isVerified ? (
                 <Navigate to="/chat" replace />
               ) : (
-                <VerifyEmail />
+                <EmailSent />
               )
-            ) : (
-              <EmailSent />
-            )
           }
         />
 
