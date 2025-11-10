@@ -1,48 +1,50 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+
+//Pages
+import LandingPage from "./pages/LandingPage/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-import { useUserStore } from "./store/useAuthStore";
 import ChatPage from "./pages/ChatPage";
-import { useCallStore } from "./store/useCallStore";
-import { onMessageListener, getTokenRequest } from "./lib/firebase";
+import { PloadProfilePic } from "./pages/PloadProfilePic";
 import { VerifyEmail } from "./pages/verificationpage";
 import { EmailSent } from "./components/EmailSent";
-import { Toaster } from "react-hot-toast";
-import { PloadProfilePic } from "./pages/PloadProfilePic";
-import LandingPage from "./pages/LandingPage/LandingPage";
+
+//Stores
+import { useUserStore } from "./store/useAuthStore";
+import { useCallStore } from "./store/useCallStore";
+
+//Firebase
+import { getTokenRequest, onMessageListener } from "./lib/firebase";
+import { VerifyEmailRoute } from "./components/VerifyEmailRoute";
 
 const App = () => {
-  const initCallEvents = useCallStore((state) => state.initCallEvents);
-  const saveToken = useUserStore((state) => state.saveToken);
-  const authUser = useUserStore((state) => state.authUser);
   const [hydrated, setHydrated] = useState(false);
-  const location =useLocation()
+  const authUser = useUserStore((state) => state.authUser);
+  const saveToken = useUserStore((state) => state.saveToken);
+  const initCallEvents = useCallStore((state) => state.initCallEvents);
 
-  const token= new URLSearchParams(location.search).get("token")
+  // Zustand hydration logic
 
-  // ✅ FIXED HYDRATION LOGIC
   useEffect(() => {
     const unsub = useUserStore.persist.onFinishHydration(() => {
       console.log("✅ Zustand rehydrated");
       setHydrated(true);
     });
 
-    // Trigger hydration manually (in case not started yet)
     useUserStore.persist.rehydrate();
-
-    // Cleanup on unmount
     return () => unsub?.();
   }, []);
 
+  //Initialize call system
 
-
-  // Initialize call events once
   useEffect(() => {
     initCallEvents();
   }, [initCallEvents]);
 
-  // Register service worker
+  //Register service worker
+
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
@@ -52,22 +54,28 @@ const App = () => {
     }
   }, []);
 
-  // Handle Firebase messaging
+  //Handle Firebase notifications
+
   useEffect(() => {
     const setupMessaging = async () => {
-      const token = await getTokenRequest();
-      if (token) saveToken(token);
+      try {
+        const token = await getTokenRequest();
+        if (token) saveToken(token);
 
-      const payload: any = await onMessageListener();
-      new Notification(payload.notification?.title, {
-        body: payload.notification?.body,
-      });
+        const payload: any = await onMessageListener();
+        new Notification(payload.notification?.title, {
+          body: payload.notification?.body,
+        });
+      } catch (err) {
+        console.log("Permission not granted or blocked");
+      }
     };
     setupMessaging();
   }, [saveToken]);
 
-  console.log("AuthUser:", authUser?.user);
-  // ✅ show loader until hydrated
+
+  //Wait for Zustand hydration
+
   if (!hydrated) {
     return (
       <div className="flex items-center justify-center min-h-screen text-white">
@@ -76,25 +84,14 @@ const App = () => {
     );
   }
 
-  if (token) {
-    return <VerifyEmail />;
-  }
-
-  if (!authUser) {
-    return <Navigate to="/signup" replace />;
-  }
-
-  
-  if (authUser.user?.isVerified) {
-    return <Navigate to="/chat" replace />;
-  }
-
+  console.log("AuthUser:", authUser?.user);
 
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
+
       <Routes>
-        {/* Public Routes */}
+        {/*Public Routes */}
         <Route
           path="/"
           element={
@@ -127,18 +124,10 @@ const App = () => {
           }
         />
 
-        <Route
-          path="/verify-email"
-          element={
-            authUser.user?.isVerified ? (
-                <Navigate to="/chat" replace />
-              ) : (
-                <EmailSent />
-              )
-          }
-        />
+        {/*Email Verification Route (Fixed Logic)*/}
+        <Route path="/verify-email" element={<VerifyEmailRoute />} />
 
-        {/* Protected Chat Route */}
+        {/* Protected Chat Route*/}
         <Route
           path="/chat"
           element={
@@ -154,6 +143,7 @@ const App = () => {
           }
         />
 
+        {/* Profile Setup Route*/}
         <Route
           path="/setup-profile"
           element={
@@ -170,7 +160,7 @@ const App = () => {
           }
         />
 
-        {/* Catch all */}
+        {/* Catch-all Route*/}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
@@ -178,3 +168,6 @@ const App = () => {
 };
 
 export default App;
+
+
+
