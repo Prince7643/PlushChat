@@ -137,3 +137,4 @@ export const userStore = create<userStoreType>()(
     }
   )
 );
+console.log("Zustand persist loaded ✅");
