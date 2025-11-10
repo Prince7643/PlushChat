@@ -7,7 +7,7 @@ import { Loader2, UserRound, UploadCloud } from "lucide-react";
 
  export const PloadProfilePic = () => {
   const navigate = useNavigate();
-  const { authUser, setAuthUser } = userStore();
+  const { setAuthUser } = userStore();
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);

@@ -98,7 +98,7 @@ export const userStore = create<userStoreType>()(
 
       acceptFriendRequest:async (contactId,userId)=>{
         try {
-          const res=await axiosInstance.post(`/api/contact/accept`,{contactId,userId})
+          await axiosInstance.post(`/api/contact/accept`,{contactId,userId})
 
         } catch (error) {
           console.log(error)
@@ -136,6 +136,7 @@ export const userStore = create<userStoreType>()(
       signup: async (data) => {
         try {
           const res = await axiosInstance.post('/api/user/signup', data);
+          console.log(res.data)
           if (res.status==200) {
              set({ authUser: res.data });
              toast.success('Signup successful',{

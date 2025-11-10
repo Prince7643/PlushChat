@@ -33,7 +33,6 @@ const SidebarFooter = () => {
     isNotificationClick,
     unReadMessages,
     contactUser,
-    unseenNotification,
     setIsSearch,
     setseenNotification,
     isNotificationCall,
