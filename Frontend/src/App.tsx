@@ -20,10 +20,15 @@ const App = () => {
   const [hydrated, setHydrated] = useState(false);
     useEffect(() => {
       const run = async () => {
-        await userStore.persist.rehydrate();
+        await userStore.persist.onFinishHydration(()=>{
+          console.log('Zustung rehidrated')
+        });
         setHydrated(true);
       };
-      run();
+      userStore.persist.rehydrate()
+      return ()=>{
+        run && run();
+      }
     }, []);
   if (!hydrated) return null;
 
