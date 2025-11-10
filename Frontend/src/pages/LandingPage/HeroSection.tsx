@@ -14,7 +14,7 @@ export default function HeroSection() {
   return (
     <>
       <div id="hero" className='mt-10 ml-9 mr-9 flex justify-between'>
-        <div className='text-3xl md:text-5xl  font-bold'>
+        <div className='text-xl md:text-5xl  font-bold'>
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -24,7 +24,7 @@ export default function HeroSection() {
                 animate={{ rotate: [0, 360] }}
                 transition={{ duration: 5, repeat: Infinity,ease:"linear"}}
               >
-                <Zap  className='text-yellow-400 size-10 md:size-15'/>
+                <Zap  className='text-yellow-400 items-center size-5 md:size-15'/>
               </motion.div>
               <span>PlushChat</span>
           </motion.div>
@@ -33,7 +33,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{duration:0.6}}
-          className='flex justify-center items-center text-xl gap-4'>
+          className='flex justify-center items-center text-sm md:text-xl gap-4'>
             <motion.div
               onClick={()=>handleScrool('hero')} 
               whileHover={{ scale: 1.1 }}
@@ -73,7 +73,7 @@ export default function HeroSection() {
         </motion.div>
       </div>
         {/**Hero*/}
-        <section className='mt-20 ml-9 mr-9  flex-col max-w-[120rem] mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center '>
+        <section className='mt-20 md:ml-9 md:mr-9  flex-col max-w-[120rem] mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center '>
           <motion.div
             className="absolute top-20 left-10 w-32 h-32 bg-yellow-400/10 rounded-full blur-xl"
               animate={{
@@ -115,7 +115,7 @@ export default function HeroSection() {
           </motion.div>
 
           <motion.div
-            className="text-center lg:text-left z-10"
+            className="justify-center text-center lg:text-left z-10"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -195,9 +195,9 @@ export default function HeroSection() {
                 animate={{
                   opacity: 2,
                   scale: 1,
-                  y: [0, -10, 10, -10, 10, 0],  // 👈 up-down vibration
+                  y: [0, -10, 0],  // 👈 up-down vibration
                 }}
-              transition={{ duration:10,repeat:Infinity,repeatType:"loop" }}
+              transition={{ duration:6,repeat:Infinity,repeatType:"loop" }}
             
             className='bg-gradient-to-b flex items-center justify-center bg-[#1e1e22] h-90 w-80 rounded-4xl'>
               <div className='bg-[#0e0e10] rounded-2xl w-70 h-80'>
