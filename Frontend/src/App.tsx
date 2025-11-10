@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
@@ -17,6 +17,11 @@ const App = () => {
   const initCallEvents = useCallStore((state) => state.initCallEvents);
   const saveToken = userStore((state) => state.saveToken);
   const authUser = userStore((state) => state.authUser);
+  const [hidration,sethidration]=useState(false)
+
+  useEffect(()=>{
+    sethidration(true)
+  },[])
 
   // Initialize call events once
   useEffect(() => {
@@ -48,6 +53,9 @@ const App = () => {
     setupMessaging();
   }, [saveToken]);
   console.log("ProfilePic:",authUser?.user.profilePic)
+
+  if(!hidration) return null
+  console.log("AuthUser:", authUser?.user)
   return (
     <>
       <Toaster position="top-center" reverseOrder={false}/>
@@ -55,7 +63,7 @@ const App = () => {
         {/* Public Routes */}
         <Route
           path="/"
-          element={!authUser ? <LandingPage /> : <Navigate to="/chat" replace />}
+          element={!authUser?.user ? <LandingPage /> : <Navigate to="/chat" replace />}
         />
 
         <Route
@@ -73,7 +81,7 @@ const App = () => {
 
         <Route
           path="/signup"
-          element={!authUser ? <SignupPage /> : <Navigate to="/verify-email" replace />}
+          element={!authUser?.user ? <SignupPage /> : <Navigate to="/verify-email" replace />}
         />
 
         <Route
