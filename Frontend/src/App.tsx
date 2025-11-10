@@ -1,139 +1,128 @@
-import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
-import toast from "react-hot-toast";
-import type { userStoreType } from "./Types/interface";
-import { axiosInstance } from "./lib/axios";
+import { useEffect, useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import { userStore } from "./store/useAuthStore";
+import ChatPage from "./pages/ChatPage";
+import { useCallStore } from "./store/useCallStore";
+import { onMessageListener,getTokenRequest } from "./lib/firebase";
+import { VerifyEmail } from "./pages/verificationpage";
+import { EmailSent } from "./components/EmailSent";
+import { Toaster } from 'react-hot-toast'
+import {PloadProfilePic} from "./pages/PloadProfilePic";
+import LandingPage from "./pages/LandingPage/LandingPage";
 
-export const userStore = create<userStoreType>()(
-  persist(
-    (set, get) => ({
-      authUser: null,
-      searchUser: [],
-      isDark: false,
-      notification: [],
-      isCheckingAuth: true,
-      onlineUsers: [],
 
-      setOnlineUsers: (users) => set({ onlineUsers: users }),
+const App = () => {
+  const initCallEvents = useCallStore((state) => state.initCallEvents);
+  const saveToken = userStore((state) => state.saveToken);
+  const authUser = userStore((state) => state.authUser);
+  const [hidration,sethidration]=useState(false)
 
-      setAuthUser: (user) => set({ authUser: { user: { ...user } } }),
+  useEffect(()=>{
+    sethidration(true)
+  },[])
 
-      checkAuth: async () => {
-        try {
-          const res = await axiosInstance.get("/api/user/checkAuth");
-          set({ authUser: res.data });
-        } catch {
-          set({ authUser: null });
-        } finally {
-          set({ isCheckingAuth: false });
-        }
-      },
+  // Initialize call events once
+  useEffect(() => {
+    initCallEvents();
+  }, [initCallEvents]);
 
-      login: async (data) => {
-        try {
-          const res = await axiosInstance.post("/api/user/login", data);
-          if (res.status === 200) {
-            set({ authUser: res.data });
-            toast.success("Login successful 🎉");
-          }
-        } catch (error: any) {
-          set({ authUser: null });
-          toast.error(error.response?.data.msg || "Invalid credentials ❌");
-        }
-      },
-
-      logout: async () => {
-        try {
-          const res = await axiosInstance.post("/api/user/logout");
-          if (res.status === 200) {
-            set({ authUser: null });
-            toast.success("Logout successful 👋");
-          }
-        } catch {
-          toast.error("Logout failed ❌");
-        }
-      },
-
-      signup: async (data) => {
-        try {
-          const res = await axiosInstance.post("/api/user/signup", data);
-          console.log(res.data);
-          if (res.status === 200) {
-            set({ authUser: res.data });
-            toast.success("Signup successful 🎉");
-          }
-        } catch (error: any) {
-          set({ authUser: null });
-          toast.error(error.response?.data?.msg || "Signup failed ❌");
-        }
-      },
-
-      setNotification: (notification) => set({ notification }),
-
-      sendFriendRequest: async (contactId) => {
-        try {
-          const res = await axiosInstance.post(`/api/contact/send`, { contactId });
-          if (res.status === 200) {
-            set({ notification: [res.data.newNotification] });
-            toast.success("Friend request sent 🎉");
-          }
-        } catch (error: any) {
-          toast.error(error.response?.data.msg || "Friend request failed ❌");
-        }
-      },
-
-      acceptFriendRequest: async (contactId, userId) => {
-        try {
-          await axiosInstance.post(`/api/contact/accept`, { contactId, userId });
-        } catch (error) {
-          console.log(error);
-        }
-      },
-
-      rejectFriendRequest: async (userId) => {
-        try {
-          const res = await axiosInstance.post(`/api/contact/reject`, userId);
-          console.log(res.data);
-        } catch (error) {
-          console.log(error);
-        }
-      },
-
-      setsearchUser: async (username) => {
-        try {
-          if (!username) return;
-          const res = await axiosInstance.get(`/api/user/search?q=${username}`);
-          set({ searchUser: res.data.users });
-        } catch {
-          set({ searchUser: [] });
-        }
-      },
-
-      getNotification: async () => {
-        try {
-          const res = await axiosInstance.get("/api/notification/get");
-          set({ notification: res.data || [] });
-        } catch (error) {
-          console.log(error);
-        }
-      },
-
-      setIsDark: () => {
-        const { isDark } = get();
-        set({ isDark: !isDark });
-      },
-
-      saveToken: async (token: any) => {
-        try {
-          await axiosInstance.post("/api/user/save-fcm-token", { token });
-        } catch {
-          console.log("Failed to save token");
-        }
-      },
-    }),
-    {
-      name: "auth-store",
-      storage: createJSONStorage(() => sessionStorage), // ✅ fixed type-safe persist
+  // Register service worker once
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/firebase-messaging-sw.js')
+      .then((reg)=>console.log('service worker registered',reg.scope))
+      .catch((err)=>console.log('service worker not registered',err))
     }
-  )
-);
+  }, []);
+
+  // Handle Firebase messaging
+  useEffect(() => {
+    const setupMessaging = async () => {
+
+        const token = await getTokenRequest();
+        if (token) saveToken(token);
+        
+        const payload:any = await onMessageListener();
+        new Notification(payload.notification?.title, {
+          body: payload.notification?.body,
+        });
+
+    };
+    setupMessaging();
+  }, [saveToken]);
+  console.log("ProfilePic:",authUser?.user.profilePic)
+
+  if(!hidration) return null
+  console.log("AuthUser:", authUser?.user)
+  return (
+    <>
+      <Toaster position="top-center" reverseOrder={false}/>
+      <Routes>
+        {/* Public Routes */}
+        <Route
+          path="/"
+          element={!authUser?.user ? <LandingPage /> : <Navigate to="/chat" replace />}
+        />
+
+        <Route
+          path="/login"
+          element={
+            !authUser ? (
+              <LoginPage />
+            ) : !authUser.user?.profilePic || authUser.user?.profilePic.trim() === "" ? (
+              <Navigate to="/setup-profile" replace />
+            ) : (
+              <Navigate to="/chat" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/signup"
+          element={!authUser?.user ? <SignupPage /> : <Navigate to="/verify-email" replace />}
+        />
+
+        <Route
+          path="/verify-email"
+          element={
+            authUser
+              ? authUser.user?.isVerified
+                ? <Navigate to="/chat" replace />
+                : <EmailSent />
+              : <VerifyEmail />
+          }
+        />
+
+        {/* Protected Chat Route */}
+        <Route
+          path="/chat"
+          element={
+            authUser
+              ? authUser.user?.isVerified
+                ? <ChatPage />
+                : <Navigate to="/verify-email" replace />
+              : <Navigate to="/" replace />
+          }
+        />
+        <Route
+          path="/setup-profile"
+          element={
+          authUser
+            ? !authUser.user.profilePic  || authUser.user?.profilePic.trim() === ""
+              ? <PloadProfilePic />
+              : <Navigate to="/chat" replace />
+            : <Navigate to="/login" replace />
+          }
+        />
+
+        {/* Catch all - optional */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+
+    </>
+  );
+};
+
+export default App;
