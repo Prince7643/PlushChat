@@ -4,10 +4,6 @@ import type { userStoreType } from "../Types/interface";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 
-const storage = typeof window !== "undefined"
-  ? createJSONStorage(() => localStorage)
-  : undefined;
-
 export const userStore = create<userStoreType>()(
   persist(
     (set, get) => ({
@@ -20,7 +16,7 @@ export const userStore = create<userStoreType>()(
 
       setOnlineUsers: (users) => set({ onlineUsers: users }),
 
-      setAuthUser: (user) => set({ authUser: { user: { ...user } } }),
+      setAuthUser: (user) => set({ authUser: { user } }),
 
       checkAuth: async () => {
         try {
@@ -73,7 +69,6 @@ export const userStore = create<userStoreType>()(
       },
 
       setNotification: (notification) => set({ notification }),
-
       sendFriendRequest: async (contactId) => {
         try {
           const res = await axiosInstance.post(`/api/contact/send`, { contactId });
@@ -137,8 +132,8 @@ export const userStore = create<userStoreType>()(
     }),
     {
       name: "auth-store",
-      storage// ✅ fixed type-safe persist
+      storage: createJSONStorage(() => localStorage), // ✅ Always valid in browser
+      partialize: (state) => ({ authUser: state.authUser }), // ✅ optional: only save auth
     }
   )
 );
-
