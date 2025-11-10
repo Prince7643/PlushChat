@@ -17,11 +17,16 @@ const App = () => {
   const initCallEvents = useCallStore((state) => state.initCallEvents);
   const saveToken = userStore((state) => state.saveToken);
   const authUser = userStore((state) => state.authUser);
-  const [hidration,sethidration]=useState(false)
+  const [hydrated, setHydrated] = useState(false);
+    useEffect(() => {
+      const run = async () => {
+        await userStore.persist.rehydrate();
+        setHydrated(true);
+      };
+      run();
+    }, []);
+  if (!hydrated) return null;
 
-  useEffect(()=>{
-    sethidration(true)
-  },[])
 
   // Initialize call events once
   useEffect(() => {
@@ -54,7 +59,6 @@ const App = () => {
   }, [saveToken]);
   console.log("ProfilePic:",authUser?.user.profilePic)
 
-  if(!hidration) return null
   console.log("AuthUser:", authUser?.user)
   return (
     <>

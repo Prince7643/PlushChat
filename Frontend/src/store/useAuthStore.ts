@@ -4,6 +4,19 @@ import type { userStoreType } from "../Types/interface";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 
+const safeStorage = createJSONStorage(() => {
+  if (typeof window !== "undefined") {
+    return localStorage; // browser
+  }
+  // fallback: dummy in-memory store for SSR
+  let memoryStore: Record<string, string> = {};
+  return {
+    getItem: (name) => memoryStore[name] || null,
+    setItem: (name, value) => { memoryStore[name] = value; },
+    removeItem: (name) => { delete memoryStore[name]; },
+  };
+});
+
 export const userStore = create<userStoreType>()(
   persist(
     (set, get) => ({
@@ -132,7 +145,7 @@ export const userStore = create<userStoreType>()(
     }),
     {
       name: "auth-store",
-      storage: createJSONStorage(() => localStorage), // ✅ Always valid in browser
+      storage: safeStorage,
       partialize: (state) => ({ authUser: state.authUser }), // ✅ optional: only save auth
     }
   )
