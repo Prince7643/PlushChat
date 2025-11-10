@@ -32,14 +32,7 @@ const App = () => {
     return () => unsub?.();
   }, []);
 
-  // ✅ show loader until hydrated
-  if (!hydrated) {
-    return (
-      <div className="flex items-center justify-center min-h-screen text-white">
-        Loading...
-      </div>
-    );
-  }
+
 
   // Initialize call events once
   useEffect(() => {
@@ -71,7 +64,14 @@ const App = () => {
   }, [saveToken]);
 
   console.log("AuthUser:", authUser?.user);
-
+  // ✅ show loader until hydrated
+  if (!hydrated) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        Loading...
+      </div>
+    );
+  }
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
@@ -144,7 +144,7 @@ const App = () => {
           path="/setup-profile"
           element={
             authUser ? (
-              !authUser.user.profilePic ||
+              !authUser.user?.profilePic ||
               authUser.user?.profilePic.trim() === "" ? (
                 <PloadProfilePic />
               ) : (
