@@ -38,17 +38,15 @@ export async function signup(req:Request<{},{},UserBody>,res:Response) {
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        const verificationToken =getverificationLink().token;
-        const verificationTokenExpires =getverificationLink().expiresAt;        
+        const getLink =getverificationLink();        
         const user = await PendingUser.create({ 
             username, 
             email, 
             password:hashedPassword,
-            verificationToken,
-            verificationTokenExpires, 
+            verificationToken:getLink.verificationToken,
+            verificationTokenExpires:getLink.verificationExpiresAt, 
             expiresAt:Date.now()+ 1000 * 60 * 60,
         });
-        const verificationLink=getverificationLink().verificationLink;
         if (!user) {
             return res.status(400).json({ msg: "Error creating user",user });
         }
@@ -56,7 +54,7 @@ export async function signup(req:Request<{},{},UserBody>,res:Response) {
             emailService(
                 email,
                 "Welcome to PlusChat",
-                { username: user.username, verifyLink: verificationLink },
+                { username: user.username, verifyLink: getLink.verificationLink },
                 registerUserTemplate
             )
         } catch (error) {
@@ -196,9 +194,8 @@ export async function SendverifyEmail(req:Request,res:Response) {
         if (!user) {
             return res.status(400).json({ msg: "User does not exist" });
         }
-        const verificationToken =getverificationLink().token;
-        const verificationTokenExpires =getverificationLink().expiresAt;
-        const updatedUser = await PendingUser.findByIdAndUpdate(user._id, { verificationToken, verificationTokenExpires });
+        const getLink =getverificationLink()
+        const updatedUser = await PendingUser.findByIdAndUpdate(user._id, { verificationToken:getLink.verificationToken, verificationTokenExpires:getLink.verificationExpiresAt });
         if (!updatedUser) {
             return res.status(400).json({ msg: "Error sending email" });
         }
