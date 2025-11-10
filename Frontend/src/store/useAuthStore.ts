@@ -4,6 +4,10 @@ import type { userStoreType } from "../Types/interface";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 
+const storage = typeof window !== "undefined"
+  ? createJSONStorage(() => localStorage)
+  : undefined;
+
 export const userStore = create<userStoreType>()(
   persist(
     (set, get) => ({
@@ -133,7 +137,8 @@ export const userStore = create<userStoreType>()(
     }),
     {
       name: "auth-store",
-      storage: createJSONStorage(() => sessionStorage), // ✅ fixed type-safe persist
+      storage// ✅ fixed type-safe persist
     }
   )
 );
+
