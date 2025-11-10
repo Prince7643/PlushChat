@@ -116,10 +116,10 @@ const App = () => {
               authUser.user?.isVerified ? (
                 <Navigate to="/chat" replace />
               ) : (
-                <EmailSent />
+                <VerifyEmail />
               )
             ) : (
-              <VerifyEmail />
+              <EmailSent />
             )
           }
         />
