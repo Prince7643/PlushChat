@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 //Pages
@@ -8,8 +8,6 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ChatPage from "./pages/ChatPage";
 import { PloadProfilePic } from "./pages/PloadProfilePic";
-import { VerifyEmail } from "./pages/verificationpage";
-import { EmailSent } from "./components/EmailSent";
 
 //Stores
 import { useUserStore } from "./store/useAuthStore";
