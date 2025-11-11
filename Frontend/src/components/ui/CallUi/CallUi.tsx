@@ -5,12 +5,12 @@ import InCall from './InCall'
 
 export const CallUi = () => {
   
-  const {  incomingCall,  inCall, call, outgingCall } = useCallStore();
-  console.log(incomingCall, inCall, call, outgingCall)
+  const {  incomingCall,  inCall, call, outgoingCall } = useCallStore();
+  console.log(incomingCall, inCall, call, outgoingCall)
 
   if (incomingCall && call) return <IncomingCall />
   
-  if (outgingCall && call) return <OutgoingCall />
+  if (outgoingCall && call) return <OutgoingCall />
 
   // 🧩 Active Call Screen
   if (inCall) return <InCall />

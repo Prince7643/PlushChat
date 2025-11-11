@@ -117,7 +117,7 @@ export interface CallState {
     incomingCall: boolean;
     offer: RTCSessionDescriptionInit | null;
     inCall: boolean;
-    outgingCall:User|null;
+    outgoingCall:User|null;
     videoCall: boolean;
     voiceCall:boolean
     setVideoCall:(videoCall:boolean)=>void

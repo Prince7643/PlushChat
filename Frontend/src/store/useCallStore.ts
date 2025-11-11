@@ -20,7 +20,7 @@ export const useCallStore = create<CallState>(
     offer: null,
     inCall: false,
     call:false,
-    outgingCall:null,
+    outgoingCall:null,
     videoCall: false,
     voiceCall:false,
 
@@ -29,7 +29,7 @@ export const useCallStore = create<CallState>(
     setVideoCall:(videoCall)=>set({videoCall}),
 
     setOutgoingCall:(user)=> {
-      set({outgingCall:user})
+      set({outgoingCall:user})
     },
     
     setcall: (value) => set((state) => ({ call:typeof value==='boolean'?value:!state.call })),
@@ -51,13 +51,12 @@ export const useCallStore = create<CallState>(
       get().peerConnection?.addIceCandidate(new RTCIceCandidate(candidate));
     });
     socket.on("outgoingCallStarted", () => {
-      set({ outgingCall: selectedUser, call: true });
+      set({ outgoingCall: selectedUser, call: true });
     });
 
 
     socket.on("callEnded", () => {
       get().endCall();
-      set({ inCall: false, call:true });
     });
   },
 
@@ -104,6 +103,7 @@ export const useCallStore = create<CallState>(
       });
       if (selectedUser) {
       get().setOutgoingCall(selectedUser)
+      set({call:true})
     }
     }
   } catch (err:any) {
@@ -169,7 +169,8 @@ export const useCallStore = create<CallState>(
       incomingCall: false,
       offer: null,
       inCall:false,
-      call:false
+      call:false,
+      outgoingCall:null
     });
   },
 }));
