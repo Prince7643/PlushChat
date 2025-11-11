@@ -61,12 +61,10 @@ const ChatHeader = () => {
             <div className='text-black'>
                 <Video  onClick={()=>{
                     setOutgoingCall(selectedUser!)
+                    setVideoCall(true)
+                    setVoiceCall(false) 
                     setcall(true)
                     selectedUser?._id && startCall(selectedUser?._id)
-                    setVideoCall(true)
-                    setVoiceCall(false
-                        
-                    ) 
                 }
             }/></div>
             <button onClick={()=>
