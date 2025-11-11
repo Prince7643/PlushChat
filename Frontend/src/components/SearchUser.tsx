@@ -12,9 +12,10 @@ const SearchUsers: React.FC<SearchUserType> = ({ search }) => {
     (contact) =>contact.contactId === search?._id
       
   )
+  console.log(isContact)
   // Decide whether to show "Send Request" or status
   const showSendButton = !isContact || isContact.status === 'Send'
-
+  console.log(showSendButton)
   return (
     <div
       onClick={() => setSelectedUser(search!)}
