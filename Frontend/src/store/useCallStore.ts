@@ -46,10 +46,12 @@ export const useCallStore = create<CallState>(
     });
     socket.on("callRejected", () => {
       get().endCall();
+      set({ call:false, incomingCall:false });
     });
 
     socket.on("callCancelled", () => {
       get().endCall();
+      set({ call:false, outgoingCall:null });
     });
 
 
