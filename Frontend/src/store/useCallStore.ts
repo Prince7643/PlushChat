@@ -161,7 +161,7 @@ export const useCallStore = create<CallState>(
     localStream?.getTracks().forEach((t) => t.stop());
     socket.emit("endCall", { to: remoteSocketId });
 
-    set({
+    set((state) => ({
       peerConnection: null,
       localStream: null,
       remoteStream: null,
@@ -170,7 +170,7 @@ export const useCallStore = create<CallState>(
       offer: null,
       inCall:false,
       call:false,
-      outgoingCall:null
-    });
+      outgoingCall:state.inCall ? null : state.outgoingCall,
+    }));
   },
 }));
