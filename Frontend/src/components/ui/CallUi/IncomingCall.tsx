@@ -1,10 +1,18 @@
 import { Phone, PhoneIncoming, PhoneOff } from "lucide-react"
 import { useCallStore } from "../../../store/useCallStore"
 import { useChatStore } from "../../../store/useChatStore"
+import { socket } from "../../../lib/sockets"
 
 const IncomingCall = () => {
-  const { answerCall,endCall,setcall }=useCallStore()
+  const { answerCall,endCall,setcall,remoteSocketId }=useCallStore.getState()
   const {selectedUser}=useChatStore()
+
+  const handleReject = () => {
+    socket.emit("rejectCall", { to: remoteSocketId });
+    endCall();
+    setcall(false);
+  };
+
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-black text-white">
         <div className="flex flex-col items-center gap-3">
@@ -16,7 +24,7 @@ const IncomingCall = () => {
         <div className="flex gap-6 mt-10">
           {/* Reject Button */}
           <button
-            onClick={()=>{endCall(),setcall(false)}}
+            onClick={()=>{handleReject}}
             className="p-5 rounded-full bg-red-600 hover:bg-red-700 transition shadow-lg"
           >
             <PhoneOff className="text-white" size={28} />

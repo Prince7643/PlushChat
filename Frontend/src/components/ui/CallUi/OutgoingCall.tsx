@@ -1,9 +1,17 @@
 import { Phone, PhoneOff } from "lucide-react";
 import { useCallStore } from "../../../store/useCallStore";
+import { socket } from "../../../lib/sockets";
 
 const OutgoingCall = () => {
     
-    const { outgoingCall, endCall, setcall ,videoCall} = useCallStore();
+    const { outgoingCall, endCall, setcall ,videoCall,remoteSocketId} = useCallStore.getState();
+
+    const handleReject = () => {
+    socket.emit("cancelCall", { to: remoteSocketId });
+    endCall();
+    setcall(false);
+    };
+
 
     return (
 
@@ -18,7 +26,7 @@ const OutgoingCall = () => {
 
             <div className="flex gap-6 mt-10">
             <button
-                onClick={()=>{endCall(),setcall(false)}}
+                onClick={()=>{handleReject}}
                 className="p-5 rounded-full bg-red-600 hover:bg-red-700 transition shadow-lg"
             >
                 <PhoneOff className="text-white" size={28} />

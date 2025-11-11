@@ -33,6 +33,13 @@ export const CallSocket = (io: Server) => {
         io.to(socket.id).emit("userOffline", { userToCall });
       }
     });
+    socket.on("rejectCall", ({ to }) => {
+      io.to(to).emit("callRejected");
+    });
+
+    socket.on("cancelCall", ({ to }) => {
+      io.to(to).emit("callCancelled");
+    });
 
     socket.on("answerCall", ({ to, answer }) => {
       io.to(to).emit("callAnswered", { answer });

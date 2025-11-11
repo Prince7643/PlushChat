@@ -10,7 +10,7 @@ export const CallUi = () => {
 
   if (incomingCall && call) return <IncomingCall />
   
-  if (outgoingCall && call) return <OutgoingCall />
+  if (outgoingCall && call && !inCall) return <OutgoingCall />
 
   // 🧩 Active Call Screen
   if (inCall) return <InCall />

@@ -44,6 +44,14 @@ export const useCallStore = create<CallState>(
     socket.on("incomingCall", async ({ from, offer }) => {
       set({ remoteSocketId: from, offer, incomingCall: true, call:true });
     });
+    socket.on("callRejected", () => {
+      get().endCall();
+    });
+
+    socket.on("callCancelled", () => {
+      get().endCall();
+    });
+
 
     socket.on("callAnswered", async ({ answer }) => {
       await get().peerConnection?.setRemoteDescription(new RTCSessionDescription(answer));
