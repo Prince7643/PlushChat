@@ -12,35 +12,45 @@ const InCall = () => {
     const [cameraOff, setCameraOff] = useState(false);
     const {  endCall, videoCall, voiceCall, setcall, localStream, remoteStream } = useCallStore();
     const {selectedUser}=useChatStore()    
-    useEffect(() => {
-        if (localVideoRef.current && localStream) localVideoRef.current.srcObject = localStream;
-    }, [localStream]);
-    
-    useEffect(() => {
-        if (remoteVideoRef.current && remoteStream) remoteVideoRef.current.srcObject = remoteStream;
-    }, [remoteStream]);
+   useEffect(() => {
+      if (videoCall) {
+        if (localVideoRef.current && localStream)
+          localVideoRef.current.srcObject = localStream;
+        if (remoteVideoRef.current && remoteStream)
+          remoteVideoRef.current.srcObject = remoteStream;
+      } else {
+        if (localAudioRef.current && localStream)
+          localAudioRef.current.srcObject = localStream;
+        if (remoteAudioRef.current && remoteStream)
+          remoteAudioRef.current.srcObject = remoteStream;
+      }
+    }, [videoCall, localStream, remoteStream]);
 
     useEffect(() => {
-        if (localAudioRef.current && localStream) localAudioRef.current.srcObject = localStream;
-    }, [localStream]);
+      if (localStream) {
+        localStream.getAudioTracks().forEach(track => track.enabled = !muted);
+      }
+    }, [muted, localStream]);
 
     useEffect(() => {
-        if (remoteAudioRef.current && remoteStream) remoteAudioRef.current.srcObject = remoteStream;
-    }, [remoteStream]);
-    
+      if (localStream) {
+        localStream.getVideoTracks().forEach(track => track.enabled = !cameraOff);
+      }
+    }, [cameraOff, localStream]);
+
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">
         {/* Remote Video */}
-        {voiceCall?(<video
+        {voiceCall?(<audio 
+        ref={remoteAudioRef} 
+        autoPlay 
+        />):(<video
           ref={remoteVideoRef}
           autoPlay
           playsInline
           className="w-full h-full object-cover"
           id="remoteVideo"
-        />):(<audio 
-        ref={remoteAudioRef} 
-        autoPlay 
-        muted />)}
+        />)}
 
         {/* Local Video Preview */}
         <div className="absolute bottom-6 right-6 w-32 h-48 rounded-2xl overflow-hidden border border-gray-700 shadow-lg">
