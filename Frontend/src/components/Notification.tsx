@@ -5,7 +5,7 @@ import { defalutImg, type NotificationType } from "../Types/interface"
 const Notification:React.FC<NotificationType> = ({sender,message}) => {
   const {isDark,acceptFriendRequest}=useUserStore()
   const {contacts}=useChatStore()
-  const isContact=contacts?.find((contact)=>contact.contactId===sender?._id)
+  const isContact=contacts?.find((contact)=>contact.userId===sender?._id)
   console.log(isContact)
   return (
       <div  
