@@ -1,7 +1,7 @@
 import { Mic, MicOff, PhoneOff, Repeat, Video, VideoOff } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useCallStore } from '../../../store/useCallStore'
-import { useUserStore } from '../../../store/useAuthStore'
+import { useChatStore } from '../../../store/useChatStore'
 
 const InCall = () => {
     const localVideoRef=useRef<HTMLVideoElement>(null)
@@ -11,8 +11,7 @@ const InCall = () => {
     const [muted, setMuted] = useState(false);
     const [cameraOff, setCameraOff] = useState(false);
     const {  endCall, videoCall, voiceCall, setcall, localStream, remoteStream } = useCallStore();
-    const {authUser}=useUserStore()
-    
+    const {selectedUser}=useChatStore()    
     useEffect(() => {
         if (localVideoRef.current && localStream) localVideoRef.current.srcObject = localStream;
     }, [localStream]);
@@ -96,7 +95,7 @@ const InCall = () => {
 
         {/* Call Info */}
         <div className="absolute top-8 left-1/2 -translate-x-1/2 text-white text-sm font-medium">
-          <p>Talking with @{authUser?.user.username || "username"}</p>
+          <p>Talking with @{selectedUser?.username || "username"}</p>
         </div>
     </div>
   )

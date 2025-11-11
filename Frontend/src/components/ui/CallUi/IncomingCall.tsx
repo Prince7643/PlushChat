@@ -1,16 +1,15 @@
 import { Phone, PhoneIncoming, PhoneOff } from "lucide-react"
 import { useCallStore } from "../../../store/useCallStore"
-import { useUserStore } from "../../../store/useAuthStore"
+import { useChatStore } from "../../../store/useChatStore"
 
 const IncomingCall = () => {
   const { answerCall,endCall,setcall }=useCallStore()
-  const { authUser }=useUserStore()
-
+  const {selectedUser}=useChatStore()
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-black text-white">
         <div className="flex flex-col items-center gap-3">
           <PhoneIncoming size={60} className="text-green-400 animate-pulse" />
-          <h2 className="text-2xl font-semibold">{authUser?.user.username || "Incoming Call"}</h2>
+          <h2 className="text-2xl font-semibold">{selectedUser?.username || "Incoming Call"}</h2>
           <p className="text-gray-400">is calling you...</p>
         </div>
 

@@ -10,7 +10,7 @@ import { defalutImg } from '../../Types/interface'
 const ChatHeader = () => {
 
     const {setSelectedUser,selectedUser}=useChatStore()
-    const {startCall ,setcall,setVideoCall,setVoiceCall}=useCallStore()
+    const {startCall ,setcall,setVideoCall,setVoiceCall ,setOutgoingCall}=useCallStore()
     const {setOnlineUsers,onlineUsers}=useUserStore()
     useEffect(()=>{
         const handLeEscKey=(event: { key: string })=>{
@@ -51,6 +51,7 @@ const ChatHeader = () => {
         <div className='flex gap-6 items-center'>
             <div className='text-black'>
                 <PhoneCallIcon onClick={()=>{
+                    setOutgoingCall(selectedUser!)
                     setVideoCall(false)
                     setVoiceCall(true)
                     selectedUser?._id && startCall(selectedUser?._id),
@@ -59,6 +60,7 @@ const ChatHeader = () => {
             </div>
             <div className='text-black'>
                 <Video  onClick={()=>{
+                    setOutgoingCall(selectedUser!)
                     setcall(true)
                     selectedUser?._id && startCall(selectedUser?._id)
                     setVideoCall(true)
