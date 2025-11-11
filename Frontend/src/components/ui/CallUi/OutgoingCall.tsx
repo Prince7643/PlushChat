@@ -3,7 +3,7 @@ import { useCallStore } from "../../../store/useCallStore";
 
 const OutgoingCall = () => {
     
-    const { outgingCall, endCall, setcall ,videoCall} = useCallStore();
+    const { outgoingCall, endCall, setcall ,videoCall} = useCallStore();
 
     return (
 
@@ -11,7 +11,7 @@ const OutgoingCall = () => {
             <div className="flex flex-col items-center gap-3">
             <Phone size={60} className="text-green-400 animate-pulse" />
             <h2 className="text-2xl font-semibold">
-                {videoCall?"Video":"Voice"} Calling {outgingCall?.username || "user"}...
+                {videoCall?"Video":"Voice"} Calling {outgoingCall?.username || "user"}...
             </h2>
             <p className="text-gray-400">Waiting for them to answer</p>
             </div>
