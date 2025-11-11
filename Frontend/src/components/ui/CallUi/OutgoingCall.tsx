@@ -26,7 +26,7 @@ const OutgoingCall = () => {
 
             <div className="flex gap-6 mt-10">
             <button
-                onClick={()=>{handleReject}}
+                onClick={()=>{handleReject()}}
                 className="p-5 rounded-full bg-red-600 hover:bg-red-700 transition shadow-lg"
             >
                 <PhoneOff className="text-white" size={28} />
