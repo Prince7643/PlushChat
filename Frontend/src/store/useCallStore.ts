@@ -4,6 +4,7 @@ import { useUserStore } from "./useAuthStore";
 import type { CallState } from "../Types/interface";
 import { useChatStore } from "./useChatStore";
 
+let callEventsInitialized = false; // 🧩 add this outside create()
 
 const { authUser } = useUserStore.getState();
 const {selectedUser}=useChatStore.getState()
@@ -38,6 +39,8 @@ export const useCallStore = create<CallState>(
     initCallEvents: () => {
      get().peerConnection;
 
+      if (callEventsInitialized) return; // ✅ Prevent double binding
+      callEventsInitialized = true;
     socket.on("incomingCall", async ({ from, offer }) => {
       set({ remoteSocketId: from, offer, incomingCall: true, call:true });
     });
@@ -50,13 +53,10 @@ export const useCallStore = create<CallState>(
     socket.on("iceCandidate", ({ candidate }) => {
       get().peerConnection?.addIceCandidate(new RTCIceCandidate(candidate));
     });
-    socket.on("outgoingCallStarted", () => {
-      set({ outgoingCall: selectedUser, call: true });
-    });
-
 
     socket.on("callEnded", () => {
       get().endCall();
+      set({ call:false, outgoingCall:null });
     });
   },
 
