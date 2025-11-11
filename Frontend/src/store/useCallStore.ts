@@ -50,7 +50,7 @@ export const useCallStore = create<CallState>(
     socket.on("iceCandidate", ({ candidate }) => {
       get().peerConnection?.addIceCandidate(new RTCIceCandidate(candidate));
     });
-    socket.on("callInitiated", () => {
+    socket.on("outgoingCallStarted", () => {
       set({ outgingCall: selectedUser, call: true });
     });
 
