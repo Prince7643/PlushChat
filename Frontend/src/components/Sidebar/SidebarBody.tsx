@@ -5,6 +5,8 @@ import Messages from "../Messages";
 import ContactProfile from "../Contact";
 import SearchUsers from "../SearchUser";
 import Notification from "../Notification";
+import { useEffect, useState } from "react";
+import { UserSkeleton } from "../ui/Skeleton/UserSkeleton";
 
 const SidebarBody = () => {
   const { 
@@ -21,38 +23,74 @@ const SidebarBody = () => {
     isNotificationCall, 
     setIsSearch
   } = useChatStore();
+  const useVisibleSkeletonCount =()=>{
+    const [count,setCount]=useState<number>(5)
+    useEffect(()=>{
+      const updateCount=()=>{
+        const screenWidth = window.innerWidth;
+        const skeletonCount = Math.floor(screenWidth / 60);
+        setCount(skeletonCount)
+      }
+      updateCount()
+      window.addEventListener('resize',updateCount)
+      return ()=>{
+        window.removeEventListener('resize', updateCount)
+      }
+    })
+    return count
+  }
   const renderContent = () => {
-    if (isChatClick && Array.isArray(Chats)&&Chats.length>0) {
+    
+    if (isChatClick){ 
+      if (Array.isArray(Chats)&&(Chats.length>0)){
       return Chats.map((chat) => <Messages key={chat._id} {...chat} chat={chat} />);
+      }else{
+        return Array.from({ length: useVisibleSkeletonCount() }).map((_, i) => <UserSkeleton key={i} />);
+      }
     }
 
-    if (isContactClick && Array.isArray(contactUser)&&contactUser.length>0) {
-      return contactUser.map((contact) => <ContactProfile key={contact._id} contact={contact} />);
+    if (isContactClick){ 
+      if(Array.isArray(contactUser)&&contactUser.length>0) {
+        return contactUser.map((contact) => <ContactProfile key={contact._id} contact={contact} />);
+      }else{
+        return Array.from({ length: useVisibleSkeletonCount() }).map((_, i) => <UserSkeleton key={i} />);
+      }
     }
 
-    if (isNotificationClick && Array.isArray(notification) && notification.length > 0) {
-      return notification.map((notify) =>{
-        if (notify.type==='friendRequest') {
-          return(
+    if (isNotificationClick){ 
+      if(Array.isArray(notification) && notification.length > 0) {
+        return notification.map((notify) =>{
+          if (notify.type==='friendRequest') {
+            return(
              <Notification key={notify._id} {...notify} />
-          )
-        }
-      });
+            )
+          }
+        });
+      }
+      else{
+        return Array.from({ length: useVisibleSkeletonCount() }).map((_, i) => <UserSkeleton key={i} />);
+      }
     }
     
-    if (isNotificationCall && Array.isArray(notification) && notification.length > 0) {
-      return notification.map((notify) =>{
-        if (notify.type==='call') {
-          return(
-          <Notification key={notify._id} {...notify} />)
-        }
-      });
+    if (isNotificationCall){
+      if ( Array.isArray(notification) && notification.length > 0) {
+        return notification.map((notify) =>{
+          if (notify.type==='call') {
+            return(
+            <Notification key={notify._id} {...notify} />)
+          }
+        });
+      }else{  
+        return Array.from({ length: useVisibleSkeletonCount() }).map((_, i) => <UserSkeleton key={i} />);
+      }
     }
-
-    if (isSearch&&Array.isArray(searchUser) && searchUser.length > 0) {
-      return searchUser.map((user) => <SearchUsers key={user._id} search={user} />);
+    if (isSearch){
+      if (Array.isArray(searchUser) && searchUser.length > 0) {
+        return searchUser.map((user) => <SearchUsers key={user._id} search={user} />);
+      }else{
+        return Array.from({ length: useVisibleSkeletonCount() }).map((_, i) => <UserSkeleton key={i} />);
+      }
     }
-
     return <div className="text-center text-gray-400 mt-6">No content available</div>;
   };
 

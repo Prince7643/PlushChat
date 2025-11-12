@@ -1,7 +1,7 @@
 import { useEffect, useState, Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-
+import { PageLoadingSkeleton } from "./components/ui/Skeleton/PageLoadingSkeleton";
 //Pages
 const LandingPage = lazy(() => import("./pages/LandingPage/LandingPage"));
 import LoginPage from "./pages/LoginPage";
@@ -76,9 +76,7 @@ const App = () => {
 
   if (!hydrated) {
     return (
-      <div className="flex items-center justify-center min-h-screen text-white">
-        Loading...
-      </div>
+      <PageLoadingSkeleton />
     );
   }
 
@@ -87,7 +85,7 @@ const App = () => {
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
-      <Suspense fallback={<div className="text-center text-white p-10">Loading</div>}/>
+      <Suspense fallback={<PageLoadingSkeleton />}/>
       <Routes>
         {/*Public Routes */}
         <Route
