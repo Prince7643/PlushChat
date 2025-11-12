@@ -5,8 +5,8 @@ import Messages from "../Messages";
 import ContactProfile from "../Contact";
 import SearchUsers from "../SearchUser";
 import Notification from "../Notification";
-import { useEffect, useState } from "react";
 import { UserSkeleton } from "../ui/Skeleton/UserSkeleton";
+import {useVisibleSkeletonCount}  from "../../Hook/useVisibleSkeletonCount";
 
 const SidebarBody = () => {
   const { 
@@ -23,22 +23,7 @@ const SidebarBody = () => {
     isNotificationCall, 
     setIsSearch
   } = useChatStore();
-  const useVisibleSkeletonCount =()=>{
-    const [count,setCount]=useState<number>(5)
-    useEffect(()=>{
-      const updateCount=()=>{
-        const screenWidth = window.innerWidth;
-        const skeletonCount = Math.floor(screenWidth / 60);
-        setCount(skeletonCount)
-      }
-      updateCount()
-      window.addEventListener('resize',updateCount)
-      return ()=>{
-        window.removeEventListener('resize', updateCount)
-      }
-    })
-    return count
-  }
+
   const renderContent = () => {
     
     if (isChatClick){ 
@@ -104,4 +89,4 @@ const SidebarBody = () => {
   );
 };
 
-export default SidebarBody;
+export default SidebarBody
