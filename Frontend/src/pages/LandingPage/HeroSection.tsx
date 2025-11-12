@@ -26,7 +26,7 @@ export default function HeroSection() {
               >
                 <Zap  className='text-yellow-400 items-center size-5 md:size-15'/>
               </motion.div>
-              <span>PlushChat</span>
+              <span>PlusChat</span>
           </motion.div>
         </div>
         <motion.div 
