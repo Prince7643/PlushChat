@@ -5,7 +5,7 @@ import { axiosInstance } from "../lib/axios";
 import { toast } from "react-hot-toast";
 import { Loader2, UserRound, UploadCloud } from "lucide-react";
 
- export const PloadProfilePic = () => {
+const UploadProfilePic = () => {
   const navigate = useNavigate();
   const { setAuthUser } = useUserStore();
   const [image, setImage] = useState<File | null>(null);
@@ -104,3 +104,5 @@ import { Loader2, UserRound, UploadCloud } from "lucide-react";
     </div>
   );
 };
+
+export default UploadProfilePic;

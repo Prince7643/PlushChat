@@ -1,12 +1,12 @@
 
-import { useRef, useState } from "react";
+import { useRef, useState, Suspense, lazy } from "react";
 import { SendIcon } from "lucide-react";
 import { useChatStore } from "../../store/useChatStore";
 import { useUserStore } from "../../store/useAuthStore";
 import { socket } from "../../lib/sockets";
-import EmojiPicker ,{Theme} from "emoji-picker-react";
+import {Theme} from "emoji-picker-react";
 import { SmilePlus } from "lucide-react";
-
+const EmojiPicker = lazy(() => import("emoji-picker-react"))
 function MessageInput() {
 
   const [text, setText] = useState("");
@@ -100,6 +100,7 @@ function MessageInput() {
       </form>
         {showEmoji&&(
           <div className="absolute bottom-19 left-2 sm:left-2 md:left-2 z-50 overflow-hidden rounded-2xl shadow-lg">
+            <Suspense fallback={<div className="text-gray-500">Loading emojis...</div>} />
             <EmojiPicker 
               open={showEmoji}
               theme={isDark?Theme.DARK:Theme.LIGHT} 

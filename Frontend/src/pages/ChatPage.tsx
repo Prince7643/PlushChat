@@ -2,11 +2,10 @@ import Sidebar from "../components/Sidebar";
 import { ChatContainer } from "../components/ChatContainer/ChatContainer";
 import { useChatStore } from "../store/useChatStore";
 import { useUserStore } from "../store/useAuthStore";
-import { CallUi } from "../components/ui/CallUi/CallUi";
 import { useCallStore } from "../store/useCallStore";
 import NoConversationPlaceholder from "../components/ChatContainer/NoCoversationPlaceholder";
-import { useEffect } from "react";
-
+import { useEffect ,Suspense ,lazy } from "react";
+const CallUi=lazy(()=>import("../components/ui/CallUi/CallUi"))
 const ChatPage = () => {
   const { selectedUser,getContact,getsChats,getUnseenNotification } = useChatStore();
   const {isDark,getNotification}=useUserStore()
@@ -38,7 +37,9 @@ const ChatPage = () => {
       >
         <div className="flex-1 rounded-3xl overflow-hidden shadow-4xl bg-[#F0F0F3]">
           { call ? (
-            <CallUi/>
+            <Suspense fallback={<div className="text-center text-white p-10">Loading call</div>}>
+              <CallUi/>
+            </Suspense>
           ) :selectedUser ?<ChatContainer />:(
             <NoConversationPlaceholder />
           )}

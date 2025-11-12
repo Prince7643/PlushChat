@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 //Pages
-import LandingPage from "./pages/LandingPage/LandingPage";
+const LandingPage = lazy(() => import("./pages/LandingPage/LandingPage"));
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-import ChatPage from "./pages/ChatPage";
-import { PloadProfilePic } from "./pages/PloadProfilePic";
+const ChatPage = lazy(() => import("./pages/ChatPage"));
+const UploadProfilePic = lazy(() => import("./pages/UploadProfilePic"));
 
 //Stores
 import { useUserStore } from "./store/useAuthStore";
@@ -87,7 +87,7 @@ const App = () => {
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
-
+      <Suspense fallback={<div className="text-center text-white p-10">Loading</div>}/>
       <Routes>
         {/*Public Routes */}
         <Route
@@ -148,7 +148,7 @@ const App = () => {
             authUser ? (
               !authUser.user?.profilePic ||
               authUser.user?.profilePic.trim() === "" ? (
-                <PloadProfilePic />
+                <UploadProfilePic />
               ) : (
                 <Navigate to="/chat" replace />
               )

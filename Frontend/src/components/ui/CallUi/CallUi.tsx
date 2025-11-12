@@ -3,7 +3,7 @@ import IncomingCall from './IncomingCall'
 import OutgoingCall from './OutgoingCall'
 import InCall from './InCall'
 
-export const CallUi = () => {
+const CallUi = () => {
   
   const {  incomingCall,  inCall, call, outgoingCall } = useCallStore();
   console.log(incomingCall, inCall, call, outgoingCall)
@@ -24,3 +24,4 @@ export const CallUi = () => {
 
 }
 
+export default CallUi
