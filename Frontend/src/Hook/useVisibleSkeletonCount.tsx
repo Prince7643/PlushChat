@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-export const useVisibleSkeletonCount =()=>{
-    const [count,setCount]=useState<number>(5)
+export const useVisibleSkeletonCount =(num:number)=>{
+    const [count,setCount]=useState<number>(num)
     useEffect(()=>{
       const updateCount=()=>{
         const screenWidth = window.innerWidth;
