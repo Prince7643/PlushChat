@@ -42,24 +42,24 @@ const SidebarBody = () => {
   const renderContent = () => {
     
     if (isChatClick){ 
-      if (Array.isArray(Chats)&&(Chats.length>0)){
-      return Chats.map((chat) => <Messages key={chat._id} {...chat} chat={chat} />);
+      if (Array.isArray(Chats)&&(Chats?.length>0)){
+      return Chats?.map((chat) => <Messages key={chat._id} {...chat} chat={chat} />);
       }else{
         return Array.from({ length: useVisibleSkeletonCount() }).map((_, i) => <UserSkeleton key={i} />);
       }
     }
 
     if (isContactClick){ 
-      if(Array.isArray(contactUser)&&contactUser.length>0) {
-        return contactUser.map((contact) => <ContactProfile key={contact._id} contact={contact} />);
+      if(Array.isArray(contactUser)&&contactUser?.length>0) {
+        return contactUser?.map((contact) => <ContactProfile key={contact._id} contact={contact} />);
       }else{
         return Array.from({ length: useVisibleSkeletonCount() }).map((_, i) => <UserSkeleton key={i} />);
       }
     }
 
     if (isNotificationClick){ 
-      if(Array.isArray(notification) && notification.length > 0) {
-        return notification.map((notify) =>{
+      if(Array.isArray(notification) && notification?.length > 0) {
+        return notification?.map((notify) =>{
           if (notify.type==='friendRequest') {
             return(
              <Notification key={notify._id} {...notify} />
@@ -73,8 +73,8 @@ const SidebarBody = () => {
     }
     
     if (isNotificationCall){
-      if ( Array.isArray(notification) && notification.length > 0) {
-        return notification.map((notify) =>{
+      if ( Array.isArray(notification) && notification?.length > 0) {
+        return notification?.map((notify) =>{
           if (notify.type==='call') {
             return(
             <Notification key={notify._id} {...notify} />)
